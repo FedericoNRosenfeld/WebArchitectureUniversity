@@ -58,7 +58,7 @@ public class DAOCalendario {
 		public static void updateCalendario(int idCalendario,String nombre, int duenio) {
 			EntityManager em=EMF.createEntityManager();
 			em.getTransaction().begin();		
-			String jpql = "UPDATE Calendario SET nombre=?2, duenio=?3 WHERE User.id = ?1"; 
+			String jpql = "UPDATE Calendario c SET c.nombre=?2, c.duenio_idUsuario=?3 WHERE c.id = ?1"; 
 	        Query query = em.createQuery(jpql);
 	        query.setParameter(1, idCalendario);
 	        query.setParameter(2, nombre);

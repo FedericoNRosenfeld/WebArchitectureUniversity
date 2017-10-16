@@ -1,10 +1,12 @@
 package servicios;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import entidades.Actividad;
 import entidades.Sala;
 //import entidades.Usuario;
 //import entidades.Actividad;
@@ -35,7 +37,7 @@ public class DAOSala {
 	public static Sala getSala(int id) {
 		// regresa una sala en base a su ID
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT s FROM Site s WHERE s.id = ?"; 
+		String jpql = "SELECT s FROM Sala s WHERE s.id = ?"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, id);
 		return (Sala) query.getSingleResult();
@@ -49,6 +51,21 @@ public class DAOSala {
 	    List<Sala> resultados = query.getResultList(); 
 	    return resultados;
 	    
+	}
+	
+
+	public static boolean hayLugar(int idSala,Date fechaInicio, Date fechafin) {
+		EntityManager em=EMF.createEntityManager();	
+		String jpql = "SELECT a1 FROM Actividad a1"
+				+ "WHERE a.lugar_id = ?1"
+				+ " AND (a1.fechaInicio < ?2" + " AND ?2 < a1.fechaFin"
+				+ " OR a1.fechaInicio <= ?3" + " AND ?3 <= a1.fechaInicio)";
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, idSala);
+		query.setParameter(2, fechaInicio);
+		query.setParameter(3, fechafin);
+		List<Actividad> resultados = query.getResultList(); 
+		return (resultados == null);
 	}
 	
 	/// UPDATE AND DELETE
@@ -76,6 +93,7 @@ public class DAOSala {
         em.getTransaction().commit();
  
 	}
+
 	
 	
 }

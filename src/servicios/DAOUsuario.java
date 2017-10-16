@@ -50,7 +50,7 @@ private static DAOUsuario daousuario;
 	
 	public static Usuario getUsuario(int idUsuario) {
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "Select u From Usuario u where u.id =?1";
+		String jpql = "Select u From Usuario u where u.idUsuario =?1";
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idUsuario);
 		return (Usuario) query.getSingleResult();
@@ -99,7 +99,7 @@ private static DAOUsuario daousuario;
 	public static void updateUsuario(int id,String nombre, String apellido) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();		
-		String jpql = "UPDATE Usuario SET nombre=?2, " + "apellido=?3 WHERE User.id = ?1"; 
+		String jpql = "UPDATE Usuario u SET u.nombre=?2, " + "u.apellido=?3 WHERE u.idUsuario = ?1"; 
         Query query = em.createQuery(jpql);
         query.setParameter(1, id);
         query.setParameter(2, nombre);
@@ -112,12 +112,27 @@ private static DAOUsuario daousuario;
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
 		em.getTransaction().begin();
-		String jpql = "DELETE FROM User u WHERE u.id = ?1"; 
+		String jpql = "DELETE FROM Usuario u WHERE u.idUsuario = ?1"; 
         Query query = em.createQuery(jpql);
         query.setParameter(1, idUsuario);
         query.executeUpdate();
         em.getTransaction().commit();
        
+	}
+
+	public static boolean tiempoLibreUsuario(int usuario, Date fechaInicio, Date fechafin) {
+		// Optimizar para los usuarios invitados
+		EntityManager em=EMF.createEntityManager();	
+		String jpql = "SELECT a1 FROM Actividad a1"
+				+ "WHERE a.duenio_idUsuario = ?1"
+				+ " AND (a1.fechaInicio < ?2" + " AND ?2 < a1.fechaFin"
+				+ " OR a1.fechaInicio <= ?3" + " AND ?3 <= a1.fechaInicio)";
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, usuario);
+		query.setParameter(2, fechaInicio);
+		query.setParameter(3, fechafin);
+		List<Actividad> resultados = query.getResultList(); 
+		return (resultados == null);
 	}
 
 	
