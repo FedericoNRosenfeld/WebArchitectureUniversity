@@ -76,14 +76,14 @@ public class Sala implements Serializable {
 		this.actividades.add(actividad);
 	}
 	
-//	public boolean hayLugar(Date fechaI,Date fechaF) {
-//		for(int i=0; i<  actividades.size(); i++) {
-//			if (((actividades.get(i).getFechaInicio().compareTo(fechaI)> 0) && (actividades.get(i).getFechaFin().compareTo(fechaF)< 0))  
-//			 || (actividades.get(i).getFechaFin().compareTo(fechaI)> 0) && (actividades.get(i).getFechaInicio().compareTo(fechaF)< 0))
-//					return false;
-//		}
-//		 return true;
-//	}
+	public boolean hayLugar(Date fechaI,Date fechaF) {
+		for(int i=0; i<  actividades.size(); i++) {
+			if (((actividades.get(i).getFechaInicio().compareTo(fechaI)> 0) && (actividades.get(i).getFechaFin().compareTo(fechaF)< 0))  
+			 || (actividades.get(i).getFechaFin().compareTo(fechaI)> 0) && (actividades.get(i).getFechaInicio().compareTo(fechaF)< 0))
+					return false;
+		}
+		 return true;
+	}
 //	 public boolean hayLugar(Actividad act){
 //		 // si hay lugar, lo agrega a la lista de tiempos utilizados
 //	        if(!actividades.isEmpty()) { /// si la lista de actividades esta con elementos entra , sino queda el true

@@ -3,11 +3,7 @@ package entidades;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import servicios.DAOActividad;
 import servicios.DAOCalendario;
