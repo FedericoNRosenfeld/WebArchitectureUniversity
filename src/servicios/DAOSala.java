@@ -23,7 +23,7 @@ public class DAOSala {
 		return daoSala;
 	}
 	
-	public Sala crearSala(String nombre, String direccion) {
+	public static Sala crearSala(String nombre, String direccion) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
 		Sala salaA = new Sala(nombre,direccion);

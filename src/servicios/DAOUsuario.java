@@ -19,7 +19,7 @@ private static DAOUsuario daousuario;
 		return daousuario;
 	}
 	
-	public Usuario crearUsuario(String nombre, String apellido) {
+	public static Usuario crearUsuario(String nombre, String apellido) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
 		Usuario nu= new Usuario(nombre,apellido);
@@ -56,23 +56,27 @@ private static DAOUsuario daousuario;
 		return (Usuario) query.getSingleResult();
 	}
 	
-	
-	public static void getActividadDeUsuario(int idUsuario,Date fecha) {
+
+	public static List<Actividad> getActividadDeUsuarioxFecha(int idUsuario,Date fecha) {
 		EntityManager em=EMF.createEntityManager();
 		Calendar calendario = Calendar.getInstance(); /// https://stackoverflow.com/questions/2619691/extract-day-from-date
 		calendario.setTime(fecha);
-		String jpql = "Select a From Actividad a where (a.duenio.id=?1) and extract(day from a.fechaInicio )= ?2"
+		String jpql = "Select a From Actividad a where (a.duenio.id=?1) and ("
+			// en base a la fecha de inicio
+			+ "(extract(day from a.fechaInicio )= ?2"
 			+ " and extract(month from a.fechaInicio) = ?3"
-			+ " and extract(year from a.fechaInicio) = ?4"; 
+			+ " and extract(year from a.fechaInicio) = ?4) OR "
+			// en base a la fecha de fin
+			+ "(extract(day from a.fechaFin )= ?2" 
+			+ " and extract(month from a.fechaFin) = ?3"
+			+ " and extract(year from a.fechaFin) = ?4))"; 
 		Query query = em.createQuery(jpql);
 		query.setParameter(1, idUsuario);
 		query.setParameter(2, calendario.get(Calendar.DAY_OF_MONTH));
 		query.setParameter(3, calendario.get(Calendar.MONTH) + 1);
 		query.setParameter(4, calendario.get(Calendar.YEAR));
 		List<Actividad> resultados = query.getResultList(); 
-		for(int i=0; i< resultados.size();i++) { 
-			System.out.println( resultados.get(i).toString()); 
-		}
+		return resultados;
 	}
 	
 
@@ -115,6 +119,8 @@ private static DAOUsuario daousuario;
         em.getTransaction().commit();
        
 	}
+
+	
 }
 
 

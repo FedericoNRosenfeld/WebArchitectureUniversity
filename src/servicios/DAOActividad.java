@@ -25,7 +25,7 @@ public class DAOActividad {
 		return daoactividad;
 	}
 
-	public Actividad crearActividad(String nombre, int usuario ,Date fechaInicio, Date fechafin ,int sala ,int idCalendario) {
+	public static Actividad crearActividad(String nombre,int idCalendario, int usuario ,Date fechaInicio, Date fechafin ,int sala ) {
 		EntityManager em=EMF.createEntityManager();	
 		em.getTransaction().begin();
 		/// Agregar las consultas necesarias para verificar que no se solapen las cosas
@@ -39,7 +39,7 @@ public class DAOActividad {
 		return na;
 	}
 		
-	public List<Actividad> GetActividades() {
+	public List<Actividad> getActividades() {
 		EntityManager em=EMF.createEntityManager();	
 
 		String jpql = "Select a From Actividad a";
@@ -48,16 +48,6 @@ public class DAOActividad {
 		return resultados;
 	}
 	
-	public List<Actividad> GetActividadesUsuario(int usuario) {
-		EntityManager em=EMF.createEntityManager();	
-		String jpql = "SELECT a FROM Actividad a,actividad_usuario au WHERE ((au.actividad_id = a.id)" // 
-		+ "AND (au.invitados_idUsuario =1?))"  // sea un invitado
-		+ "OR (a.duenio_idUsuario=1?)"; // sea duenio
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, usuario);
-		List<Actividad> resultados = query.getResultList(); 
-		return resultados;
-	}
 
 		public List<Actividad> getActividadesSobrepuestas(int usuario, int actividad) {
 			EntityManager em=EMF.createEntityManager();	
@@ -75,6 +65,25 @@ public class DAOActividad {
 			List<Actividad> resultados = query.getResultList(); 
 			return resultados;
 			}
+		
+		
+		/// Referentes a Usuarios
+		
+		public List<Actividad> getActividadesUsuario(int usuario) {
+			EntityManager em=EMF.createEntityManager();	
+			String jpql = "SELECT a FROM Actividad a,actividad_usuario au WHERE ((au.actividad_id = a.id)" // 
+			+ "AND (au.invitados_idUsuario =1?))"  // sea un invitado
+			+ "OR (a.duenio_idUsuario=1?)"; // sea duenio
+			Query query = em.createQuery(jpql); 
+			query.setParameter(1, usuario);
+			List<Actividad> resultados = query.getResultList(); 
+			return resultados;
+		}	
+		
+		
+		
+		
+		
 		
 		
 }

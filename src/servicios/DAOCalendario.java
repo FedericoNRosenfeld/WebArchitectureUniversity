@@ -22,11 +22,10 @@ public class DAOCalendario {
 	}
 
 	
-	public Calendario crearCalendario(String nombre, int idUsuario) {
+	public static Calendario crearCalendario(String nombre, Usuario usuario) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
-		Usuario u= DAOUsuario.getUsuario(idUsuario); /// con esto buscamos que el usuario este para crearlo
-		Calendario nc = new Calendario(nombre, u);
+		Calendario nc = new Calendario(nombre, usuario);
 		em.persist(nc);
 		em.getTransaction().commit();
 		return nc;
