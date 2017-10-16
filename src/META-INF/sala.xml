@@ -1,0 +1,17 @@
+<entity-mappings>
+   <entity class="Sala">        
+      <table name="TABLA_SALA"/>
+      <attributes>
+         <id name="id" />
+         <basic name="nombre">
+            <column nullable="false" /> 
+         </basic>
+         <basic name="direccion">
+            <column nullable="false" /> 
+         </basic>
+         <many-to-one name="actividades">  
+            <join-column nullable="false"/>                                                                                                                                
+         </many-to-one>
+      </attributes>
+   </entity>
+</entity-mappings>
