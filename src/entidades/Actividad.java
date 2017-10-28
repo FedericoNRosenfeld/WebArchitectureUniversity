@@ -231,5 +231,10 @@ public class Actividad implements Serializable {
 					+ ", fechaFin=" + fechaFin + ", lugar=" + lugar + ", invitados=" + invitados + ", pendientes="
 					+ pendientes + ", calendario=" + calendario + "]";
 		}
+
+	public boolean compararSuperPosicion(Actividad act) {
+		// TODO Auto-generated method stub hola hola hola
+		return false;
+	}
 	
 }
