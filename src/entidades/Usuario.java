@@ -15,11 +15,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="USUARIO")
-public class Usuario implements Serializable {
+public class Usuario /*implements Serializable*/ {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4686073705675341538L;
+	//private static final long serialVersionUID = -4686073705675341538L;
 	@Id 
 	@GeneratedValue
 	private int idUsuario;
@@ -189,5 +189,15 @@ public class Usuario implements Serializable {
         Usuario u = (Usuario) obj;
         return u.idUsuario == idUsuario && u.nombre.equals(nombre)&& u.apellido.equals(apellido);
     }
+
+	public void enviarInvitacion(Invitacion invitacion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void recordarInvitacion(Actividad actividad) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	}
