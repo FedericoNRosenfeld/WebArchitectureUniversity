@@ -26,7 +26,7 @@ public class DAOActividad {
 		return daoactividad;
 	}
 
-	public static Actividad crearActividad(String nombre,int idCalendario, int usuario ,Date fechaInicio, Date fechafin ,int sala ) {
+	public static Actividad crearActividad(String nombre,int idCalendario, int usuario ,Date fechaInicio, Date fechafin ,Sala sala ) {
 		EntityManager em=EMF.createEntityManager();	
 		em.getTransaction().begin();
 		Actividad na = null; 
@@ -34,13 +34,14 @@ public class DAOActividad {
 		DAOUsuario.getInstance();
 		Usuario u= DAOUsuario.getUsuario(usuario);
 		DAOSala.getInstance();
-		Sala s= DAOSala.getSala(sala);
+		Sala s= DAOSala.getSala(sala.getId());
 		DAOCalendario.getInstance();
 		Calendario c =DAOCalendario.getCalendario(idCalendario);
 		// COnsultas para evitar que se solapen con otras actividades 
 		if (DAOSala.hayLugar(s.getId(),fechaInicio, fechafin)) {
 			if ( DAOUsuario.tiempoLibreUsuario(usuario, fechaInicio,fechafin)){ 
-				na = new Actividad(nombre,u,fechaInicio,fechafin,s,c);
+				na = new Actividad(nombre,u,fechaInicio,fechafin,c);
+				na.setLugar(s);
 				em.persist(na);
 				}
 		}

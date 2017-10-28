@@ -66,16 +66,16 @@ public static void main(String[] args) {
 
 	// Cracion de 10 Actividades
 	
-    Actividad actividad1 = DAOActividad.crearActividad("Actividad 1 -c1 -u1",calendario1.getId(),u1.getId(),fechaA1,fechaA2, sala1.getId());
-    Actividad actividad2 = DAOActividad.crearActividad("Actividad 2 -c1 -u1",calendario1.getId(),u1.getId(),fechaB1,fechaB2, sala2.getId());
-    Actividad actividad3 = DAOActividad.crearActividad("Actividad 3 -c2 -u2",calendario2.getId(),u2.getId(),fechaC1,fechaC2, sala1.getId());
-    Actividad actividad4 = DAOActividad.crearActividad("Actividad 4 -c2 -u2",calendario2.getId(),u2.getId(),fechaD1,fechaD2, sala3.getId());
-    Actividad actividad5 = DAOActividad.crearActividad("Actividad 5 -c3 -u3",calendario3.getId(),u3.getId(),fechaB1,fechaB2, sala3.getId());
-    Actividad actividad6 = DAOActividad.crearActividad("Actividad 6 -c4 -u4",calendario4.getId(),u4.getId(),fechaA1,fechaA2, sala2.getId());
-    Actividad actividad7 = DAOActividad.crearActividad("Actividad 7 -c5 -u5",calendario5.getId(),u5.getId(),fechaC1,fechaC2, sala4.getId());
-    Actividad actividad8 = DAOActividad.crearActividad("Actividad 8 -c5 -u5",calendario5.getId(),u5.getId(),fechaB1,fechaB2, sala5.getId());
-    Actividad actividad9 = DAOActividad.crearActividad("Actividad 9 -c1 -u1",calendario1.getId(),u1.getId(),fechaC1,fechaC2, sala5.getId());
-    Actividad actividad10 = DAOActividad.crearActividad("Actividad 10 -c2 -u2",calendario2.getId(),u2.getId(),fechaD1,fechaD2, sala1.getId());
+    Actividad actividad1 = DAOActividad.crearActividad("Actividad 1 -c1 -u1",calendario1.getId(),u1.getId(),fechaA1,fechaA2, sala1);
+    Actividad actividad2 = DAOActividad.crearActividad("Actividad 2 -c1 -u1",calendario1.getId(),u1.getId(),fechaB1,fechaB2, sala2);
+    Actividad actividad3 = DAOActividad.crearActividad("Actividad 3 -c2 -u2",calendario2.getId(),u2.getId(),fechaC1,fechaC2, sala1);
+    Actividad actividad4 = DAOActividad.crearActividad("Actividad 4 -c2 -u2",calendario2.getId(),u2.getId(),fechaD1,fechaD2, sala3);
+    Actividad actividad5 = DAOActividad.crearActividad("Actividad 5 -c3 -u3",calendario3.getId(),u3.getId(),fechaB1,fechaB2, sala3);
+    Actividad actividad6 = DAOActividad.crearActividad("Actividad 6 -c4 -u4",calendario4.getId(),u4.getId(),fechaA1,fechaA2, sala2);
+    Actividad actividad7 = DAOActividad.crearActividad("Actividad 7 -c5 -u5",calendario5.getId(),u5.getId(),fechaC1,fechaC2, sala4);
+    Actividad actividad8 = DAOActividad.crearActividad("Actividad 8 -c5 -u5",calendario5.getId(),u5.getId(),fechaB1,fechaB2, sala5);
+    Actividad actividad9 = DAOActividad.crearActividad("Actividad 9 -c1 -u1",calendario1.getId(),u1.getId(),fechaC1,fechaC2, sala5);
+    Actividad actividad10 = DAOActividad.crearActividad("Actividad 10 -c2 -u2",calendario2.getId(),u2.getId(),fechaD1,fechaD2, sala1);
 	
 	
 	/*
