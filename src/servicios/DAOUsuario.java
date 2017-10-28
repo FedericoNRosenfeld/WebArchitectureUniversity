@@ -19,13 +19,13 @@ private static DAOUsuario daousuario;
 		return daousuario;
 	}
 	
-	public static Usuario crearUsuario(String nombre, String apellido) {
+	public static Usuario crearUsuario(String nombre, String apellido,String userName, String password) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
-		Usuario nu= new Usuario(nombre,apellido);
+		Usuario nu= new Usuario(nombre,apellido,userName,password);
 		em.persist(nu);
 		em.getTransaction().commit();
-		//DAOCalendario.getInstance().createCalendar("default", newUser);
+		em.close();
 		return nu;
 	}
 
@@ -33,7 +33,8 @@ private static DAOUsuario daousuario;
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM Usuario u"; 
 	    Query query = em.createQuery(jpql); 
-	    List<Usuario> resultados = query.getResultList(); 
+	    List<Usuario> resultados = query.getResultList();
+	    em.close();
 	    return resultados;
 	    
 	}
@@ -53,6 +54,7 @@ private static DAOUsuario daousuario;
 		String jpql = "Select u From Usuario u where u.idUsuario =?1";
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idUsuario);
+		em.close();
 		return (Usuario) query.getSingleResult();
 	}
 	
@@ -75,24 +77,22 @@ private static DAOUsuario daousuario;
 		query.setParameter(2, calendario.get(Calendar.DAY_OF_MONTH));
 		query.setParameter(3, calendario.get(Calendar.MONTH) + 1);
 		query.setParameter(4, calendario.get(Calendar.YEAR));
-		List<Actividad> resultados = query.getResultList(); 
+		List<Actividad> resultados = query.getResultList();
+		em.close();
 		return resultados;
 	}
 	
 
-	public static void getActividadDeUsuarioEntreDias(int idUsuario, Date fecha1, Date fecha2) {
+	public  List<Actividad> getActividadDeUsuarioEntreDias(int idUsuario, Date fecha1, Date fecha2) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT a FROM Actividad a WHERE (a.duenio.id=?1) AND a.fechaInicio >= ?2  AND a.fechaFin <= ?3 "; 
 		Query query = em.createQuery(jpql);
 		query.setParameter(1, idUsuario);
 		query.setParameter(2, fecha1);
 		query.setParameter(3, fecha2);
-		List<Actividad> resultados = query.getResultList(); 
-		for(int i=0; i< resultados.size();i++) { 
-			System.out.println( resultados.get(i).toString()); 
-		}
-		
-		
+		List<Actividad> resultados = query.getResultList();
+		em.close();	
+		return resultados;
 	}
 
 	/// UPDATE AND DELETE 
@@ -106,17 +106,24 @@ private static DAOUsuario daousuario;
         query.setParameter(3, apellido);
         query.executeUpdate();
         em.getTransaction().commit();
+        em.close();
+
 	}
 	
-	public static void deleteUsuario(Integer idUsuario) {
+	public  boolean deleteUsuario(Integer idUsuario) {
 		EntityManager em=EMF.createEntityManager();
-		em.getTransaction().begin();
 		em.getTransaction().begin();
 		String jpql = "DELETE FROM Usuario u WHERE u.idUsuario = ?1"; 
         Query query = em.createQuery(jpql);
         query.setParameter(1, idUsuario);
         query.executeUpdate();
         em.getTransaction().commit();
+        em.close();
+        Usuario usuario = getUsuario(idUsuario);
+		if (usuario == null) {
+			return  true;
+		}	
+		return false;
        
 	}
 
@@ -131,7 +138,8 @@ private static DAOUsuario daousuario;
 		query.setParameter(1, usuario);
 		query.setParameter(2, fechaInicio);
 		query.setParameter(3, fechafin);
-		List<Actividad> resultados = query.getResultList(); 
+		List<Actividad> resultados = query.getResultList();
+		em.close();
 		return (resultados == null);
 	}
 
