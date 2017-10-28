@@ -1,4 +1,4 @@
-package servicios.REST;
+package serviciosRest;
 
 public class Sala_REST {
 
