@@ -5,15 +5,15 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+//import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+//import javax.persistence.Temporal;
+//import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="ACTIVIDAD")
@@ -28,7 +28,6 @@ public class Actividad /*implements Serializable*/ {
 	private String nombre;
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Usuario duenio;
-	
 	//@Temporal(TemporalType.DATE)
 	private Date fechaInicio;
 	//@Temporal(TemporalType.DATE)
@@ -48,12 +47,12 @@ public class Actividad /*implements Serializable*/ {
 		
 	public Actividad() {}
 	
-	public Actividad(String nombre, Usuario duenio, Date fechaInicio, Date fechaFin, Sala lugar, Calendario c) {
+	public Actividad(String nombre, Usuario duenio, Date fechaInicio, Date fechaFin, Calendario c) {
 		this.nombre = nombre;
 		this.duenio = duenio;
 		this.fechaInicio =  fechaInicio;
 		this.fechaFin =  fechaFin;
-		this.setLugar(lugar,fechaInicio,fechaFin);
+		this.lugar = null; // el lugar se lo agrega despues
 		this.invitados = new ArrayList<Usuario>();
 		this.calendario = c;
 //		this.pendientes = new ArrayList<Usuario>();
@@ -112,8 +111,8 @@ public class Actividad /*implements Serializable*/ {
 		return lugar;
 	}
 
-	public void setLugar(Sala lugar,Date fechaInicio, Date fechaFin) {
-		if (lugar.hayLugar(fechaInicio,fechaFin)) {
+	public void setLugar(Sala lugar) {
+		if (lugar.hayLugar(this)) {
 			this.lugar = lugar;
 			this.lugar.setActividad(this);
 		}
@@ -126,7 +125,7 @@ public class Actividad /*implements Serializable*/ {
    	 this.invitados.add(usuario);
    	 // creamos una invitacion para hace rla asociacion entre usuario y actividad
    	 // V 2.0 del tpe / antes se hacia todo en actividad pero se le quito esta responsabilidad
-   	 usuario.enviarInvitacion(new Invitacion(this, usuario));
+   	 usuario.setInvitacion(new Invitacion(this, usuario));
    }	
 	
 	public List<Usuario> getInvitados() {

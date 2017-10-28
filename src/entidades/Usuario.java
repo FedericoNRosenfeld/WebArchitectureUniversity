@@ -16,9 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="USUARIO")
 public class Usuario /*implements Serializable*/ {
-	/**
-	 * 
-	 */
+
 	//private static final long serialVersionUID = -4686073705675341538L;
 	@Id 
 	@GeneratedValue
@@ -32,6 +30,7 @@ public class Usuario /*implements Serializable*/ {
 	@OneToMany(mappedBy = "duenio", cascade = CascadeType.PERSIST)
     private List<Calendario> calendarios;
 	// Invitacion
+	//@OneToMany
 	@ManyToMany(mappedBy ="usuario_i", cascade=CascadeType.PERSIST)
 	private List<Invitacion> listInvitaciones;
 	// Actividad
