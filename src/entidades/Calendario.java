@@ -26,9 +26,8 @@ public class Calendario /*implements Serializable */{
 	private String nombre;
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Usuario duenio;
-	
-    //@OneToMany
-   	//private List<Usuario> usuarioscompartidos;
+
+    
 	//@OneToMany         modificamos esto
 	@ManyToMany(mappedBy="calendario",cascade=CascadeType.PERSIST)
 	private List<Actividad> actividades;

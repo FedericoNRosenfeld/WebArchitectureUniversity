@@ -1,11 +1,11 @@
 package entidades;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+//import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,46 +23,46 @@ public class Usuario /*implements Serializable*/ {
 	@Id 
 	@GeneratedValue
 	private int idUsuario;
-	@Column(nullable=false)
+	//@Column(nullable=false)
 	private String nombre;
 	private String apellido;
-	@OneToMany(cascade=CascadeType.PERSIST)
-	private List<Calendario> calendarios;
-	@ManyToMany(mappedBy ="pendientes", cascade=CascadeType.PERSIST)
-	//(cascade=CascadeType.PERSIST)
-	private List<Actividad> actividadesporaceptar;
+	private String userName;
+    private String password;
+    // Calendario
+	@OneToMany(mappedBy = "duenio", cascade = CascadeType.PERSIST)
+    private List<Calendario> calendarios;
+	// Invitacion
+	@ManyToMany(mappedBy ="usuario_i", cascade=CascadeType.PERSIST)
+	private List<Invitacion> listInvitaciones;
+	// Actividad
+	@ManyToMany (mappedBy ="invitados", cascade=CascadeType.PERSIST)
+	private List<Actividad >actividadesInvitado;
 	
-	@Override
-	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", nombre=" + nombre + ", apellido=" + apellido + ", calendarios="
-				+ calendarios + ", actividadesporaceptar=" + actividadesporaceptar + "]";
-	}
-
 	public Usuario() {
 	}
 	
-	//usuario sin calendarios
 	public Usuario(String nombre, String apellido) {
-//		this.idUsuario = id;
+		// usuario sin UserName ni pass
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.userName = null;
+		this.password = null;
 		this.calendarios =  new ArrayList<Calendario>();
-		this.actividadesporaceptar =  new ArrayList<Actividad>();
+		this.actividadesInvitado =  new ArrayList<Actividad>();
+		this.listInvitaciones =  new ArrayList<Invitacion>();
 
 	}
 
-	//usuario con calendarios
-
-	public Usuario(String nombre, String apellido, List<Calendario> calendarios) {
-		super();
-//		this.idUsuario = id;
+	public Usuario(String nombre, String apellido, String UN, String ps) {
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.calendarios = calendarios;
-		this.actividadesporaceptar =  new ArrayList<Actividad>();
-
+		this.userName = UN;
+		this.password = ps;
+		this.calendarios =  new ArrayList<Calendario>();
+		this.actividadesInvitado =  new ArrayList<Actividad>();
+		this.listInvitaciones =  new ArrayList<Invitacion>();
 	}
-
+	
 	public int getId() {
 		return idUsuario;
 	}
@@ -87,117 +87,110 @@ public class Usuario /*implements Serializable*/ {
 		this.apellido = apellido;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 	
+	public List<Invitacion> getListInvitaciones() {
+		return listInvitaciones;
+	}
+
+	public void setListInvitaciones(List<Invitacion> listInvitaciones) {
+		this.listInvitaciones = listInvitaciones;
+	}
+	public void setInvitacion(Invitacion invitacion) {
+		this.listInvitaciones.add(invitacion);
+	}
+
+	public List<Actividad> getActividadesInvitado() {
+		return actividadesInvitado;
+	}
+
+	public void setActividadesInvitado(List<Actividad> actividadesInvitado) {
+		this.actividadesInvitado = actividadesInvitado;
+	}
+
 	////////////////////////////////// Calendarios
 	public List<Calendario> getCalendarios() {
 		return calendarios;
 	}
 
 	public void setCalendarios(List<Calendario> calendarios) {
-		this.calendarios = calendarios;
+		for (int i = 0;i< this.calendarios.size();i++){
+			this.setCalendario(this.calendarios.get(i));
+		}
 	}
 	
 	public void setCalendario(Calendario calendario) {
 		this.calendarios.add(calendario);
 	}
 
-//	 public void setActividadCalendario(Actividad actividad, Calendario calendario) {
-//	        if (!horarioUsado(actividad)) {
-//	            if (calendario.getDuenio().equals(this)) {
-//	            	calendario.setActividad(actividad);
-//	            }
-//	        }
-//	    }
-//	
-//	  public boolean horarioUsado(Actividad actividad) { 
-//			for (int i = 0;i< calendarios.size();i++){
-//				List<Actividad> acti = calendarios.get(i).getActividades();
-//				for (int j = 0;j< acti.size();j++){
-//	                if (acti.get(j).compararSuperPosicion(actividad))
-//	                	return true;
-//	            }
-//	        }
-//	        return false;
-//	    }
-
 	 /// compartir calendarios y aceptar calendarios de otros
 	  
-	  public void agregarCalendario(Calendario calendario) {
+	
+
+	public void agregarCalendario(Calendario calendario) {
 	        this.calendarios.add(calendario);
 	    }
-	  
+	 
+	public Calendario buscarCalendarioID( int id){
+		for (int i = 0;i< this.calendarios.size();i++){
+			if(	this.calendarios.get(i).getId() == id) {
+				return this.calendarios.get(i); }
+			}
+		return null;
+		
+	}
 	  public void compartirCalendario(Calendario calendario, Usuario usuario) {
 		  usuario.agregarCalendario(calendario);
 	    }
 
 	  
-	  
-	  
-	  
 	/*
-	//////////////////////////// Todo lo relacionado con notificaciones de eventos pendientes
+	//////////////////////////// Todo lo relacionado con recordar Invitaciones de Actividades pendientes
 	*/
-	public void addNotificacion(Actividad act){
-		actividadesporaceptar.add(act);
+
+	public void recordarInvitacion(Actividad actividad) {
+		boolean existe = false;
+		for (int i = 0;i< this.actividadesInvitado.size();i++){
+			if (actividad.equals(this.actividadesInvitado.get(i))) {
+				existe = true;
+			}
+		}
+		if (! existe) {
+			this.listInvitaciones.add(new Invitacion(actividad, this));
+		}
 	}
 	
-	public List<Actividad> getActividadesPendientes(){
-		return actividadesporaceptar;
-			
-	}
 	
-	// contador con la cantidad de actividades pendientes, para luego cada vez que loguea vea el contador
-	public int getCantAP(){
-		return actividadesporaceptar.size();
-			
-	}
-	
-	
-	/*
-	// Para aceptar una actividad en pendientes, esta debe tener disponibilidad 
-	// horaria entre los calendarios del usuario
-	*/
-	
-//	public boolean aceptarActividadPendiente(Actividad act) {
-//		System.out.println(this.calendarios.size());
-//		for (int i = 0;i< this.calendarios.size();i++){
-//			if (!this.calendarios.get(i).disponibilidad(act)) {
-//				return false;
-//			}
-//		}
-//		act.setInvitado(this);
-//		return actividadesporaceptar.remove(act); // tira true si lo remueve
-//	}
-	
-	
-	/*
-	// Para remover una actividad de su lista de pendientes  
-	*/
-	public void removerActPendiente(Actividad actividad) {
-		actividadesporaceptar.remove(actividad);	
-	}
-//	
-//	public void acptarActividad(Actividad a) {
-//		a.setInvitado(this);
-//		
-//	}
 	
 	////////// equals
 
 	public boolean equals(Object obj) {
         Usuario u = (Usuario) obj;
-        return u.idUsuario == idUsuario && u.nombre.equals(nombre)&& u.apellido.equals(apellido);
+        return u.idUsuario == idUsuario && u.nombre.equals(nombre)&& u.apellido.equals(apellido) 
+        		&& u.userName.equals(userName) && u.password.equals(password);	
     }
 
-	public void enviarInvitacion(Invitacion invitacion) {
-		// TODO Auto-generated method stub
-		
+	@Override
+	public String toString() {
+		return "Usuario [idUsuario=" + idUsuario + ", nombre=" + nombre + ", apellido=" + apellido + ", userName="
+				+ userName + ", password=" + password + ", calendarios=" + calendarios + ", listInvitaciones="
+				+ listInvitaciones + ", actividadesInvitado=" + actividadesInvitado + "]";
 	}
 
-	public void recordarInvitacion(Actividad actividad) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	}
