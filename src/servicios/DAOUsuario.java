@@ -94,6 +94,14 @@ private static DAOUsuario daousuario;
 	}
 
 	
+	//// LOGIN
+	
+	public static Usuario login(Usuario user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }
 
 

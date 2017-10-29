@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import entidades.Calendario;
 import entidades.Usuario;
+import login.Secured;
 import servicios.DAOCalendario;
 import servicios.DAOUsuario;
 import serviciosRest.Mensajes;
@@ -24,7 +25,7 @@ public class Calendario_REST {
 	
 	// TODOS LOS CalendarioS
 	@GET
-	//@Secured
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Calendario> getCalendario() {
 		return DAOCalendario.getInstance().getCalendarios();
@@ -32,7 +33,7 @@ public class Calendario_REST {
 
 	 // CREAR UN Calendario
 	@POST
-	//@Secured
+	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response crearCalendario(Calendario calendario) {
@@ -48,7 +49,7 @@ public class Calendario_REST {
 	
 	// TRAE A UN Calendario EN BASE A SU ID
 	@GET
-	//@Secured
+	@Secured
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Calendario getCalendario(@PathParam("id") String id) {
@@ -63,7 +64,7 @@ public class Calendario_REST {
 	// MODIFICA A UN Calendario EN BASE A SU ID
 
 	@PUT
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,7 +77,7 @@ public class Calendario_REST {
 	// BORRA A UN Calendario EN BASE A SU ID
 
 	@DELETE
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCalendario(@PathParam("id") int id) {

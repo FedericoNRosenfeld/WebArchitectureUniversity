@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import entidades.Sala;
+import login.Secured;
 import servicios.DAOSala;
 import serviciosRest.Mensajes;
 
@@ -24,7 +25,7 @@ public class Sala_REST {
 	
 	// TODAS LAS SALAS
 	@GET
-	//@Secured
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Sala> getSalas() {
 		return DAOSala.getInstance().getSalas();
@@ -32,7 +33,7 @@ public class Sala_REST {
 
 	// CREAR UNA SALA
 	@POST
-	//@Secured
+	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response crearSala(Sala sala) {
@@ -47,7 +48,7 @@ public class Sala_REST {
 	// TRAE A UNA SALA EN BASE A SU ID
 
 	@GET
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Sala getSala(@PathParam("id") String id) {
@@ -62,7 +63,7 @@ public class Sala_REST {
 	// MODIFICA A UNA SALA EN BASE A SU ID
 
 		@PUT
-		//@Secured
+		@Secured
 		@Path("/{id}")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -75,7 +76,7 @@ public class Sala_REST {
 		// BORRA A UNA SALA EN BASE A SU ID
 
 		@DELETE
-		//@Secured
+		@Secured
 		@Path("/{id}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response deleteSala(@PathParam("id") int id) {

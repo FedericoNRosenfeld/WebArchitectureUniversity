@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import entidades.Usuario;
+import login.Secured;
 import servicios.DAOUsuario;
 import serviciosRest.Mensajes;
 
@@ -22,7 +23,7 @@ public class Usuario_REST {
 	
 	// TODOS LOS USUARIOS
 	@GET
-	//@Secured
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Usuario> getUsuario() {
 		return DAOUsuario.getInstance().getUsuarios();
@@ -30,7 +31,7 @@ public class Usuario_REST {
 
 	 // CREAR UN USUARIO
 	@POST
-	//@Secured
+	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response crearusuario(Usuario usuario) {
@@ -45,7 +46,7 @@ public class Usuario_REST {
 	
 	// TRAE A UN USUARIO EN BASE A SU ID
 	@GET
-	//@Secured
+	@Secured
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Usuario getUsuario(@PathParam("id") String id) {
@@ -60,7 +61,7 @@ public class Usuario_REST {
 	// MODIFICA A UN USUARIO EN BASE A SU ID
 
 	@PUT
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,7 +74,7 @@ public class Usuario_REST {
 	// BORRA A UN USUARIO EN BASE A SU ID
 
 	@DELETE
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteUsuario(@PathParam("id") int id) {

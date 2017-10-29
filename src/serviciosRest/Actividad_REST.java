@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import entidades.Calendario;
 import entidades.Sala;
 import entidades.Usuario;
+import login.Secured;
 import entidades.Actividad;
 
 import servicios.DAOCalendario;
@@ -35,7 +36,7 @@ public class Actividad_REST {
 	
 	// TODOS LOS ActividadS
 	@GET
-	//@Secured
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Actividad> getActividad() {
 		return DAOActividad.getInstance().getActividades();
@@ -46,7 +47,7 @@ public class Actividad_REST {
 
 	 // CREAR UNA Actividad
 	@POST
-	//@Secured
+	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response crearActividad(Actividad actividad) {
@@ -64,7 +65,7 @@ public class Actividad_REST {
 	
 	// TRAE A UN Actividad EN BASE A SU ID
 	@GET
-	//@Secured
+	@Secured
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Actividad getActividad(@PathParam("id") String id) {
@@ -79,7 +80,7 @@ public class Actividad_REST {
 	// MODIFICA A UN ACTIVIDAD EN BASE A SU ID
 
 	@PUT
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -92,7 +93,7 @@ public class Actividad_REST {
 	// BORRA A UN ACTIVIDAD EN BASE A SU ID
 
 	@DELETE
-	//@Secured
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteActividad(@PathParam("id") int id) {
@@ -114,7 +115,7 @@ public class Actividad_REST {
 	//  //
 	
 	@GET
-	//@Secured
+	@Secured
 	@Path("/get_actividades_usuario_sobrepuestas")
 	@Produces(MediaType.APPLICATION_JSON)
 	// es la que trae Actividades si estan sobrepuestas con la fecha de inicio y fin de una nueva 
@@ -133,7 +134,7 @@ public class Actividad_REST {
 	
 	
 	@GET
-	//@Secured
+	@Secured
 	@Path("/get_actividades_usuario_fecha")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Actividad> getReunionesUsuarioXFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha") String fecha) {
@@ -155,7 +156,7 @@ public class Actividad_REST {
 
 
 	@GET
-	//@Secured
+	@Secured
 	@Path("/actividades_usuario_entre_fechas")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Actividad> getReunionesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
