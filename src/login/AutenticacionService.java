@@ -34,15 +34,15 @@ public class AutenticacionService {
 	     Usuario user = new Usuario();
 	     user.setUserName(username);
 	     user.setPassword(password);
-	     user = DAOUsuario.login(user);
-	     if(!user.isEsValido()){
+	     user = DAOUsuario.getInstance().login(user);
+	     if(user == null){
 	    	 throw new RuntimeException();
 	     }
    }
 
 	private String emitirToken(String username) {
-	    String token = TokenHelper.generarToken(userName);
-	 	TokenHelper.setToken(token, userName);
+	    String token = TokenHelper.generarToken(username);
+	 	TokenHelper.setToken(token, username);
 	 	return token;
 	}
 

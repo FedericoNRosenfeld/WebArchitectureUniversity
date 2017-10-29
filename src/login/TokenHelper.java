@@ -16,11 +16,17 @@ public class TokenHelper {
 			return authenticationToken;
 	    }
 	 
-	    public static boolean tokenValido(String token) {
-	    	
-	    	/// AVERIGUAR COMO SEGUIR PARA VALIDAR
-	    	return false;
-	    }	
+
+		public static boolean isValidoToken(String token) {
+			// TODO Auto-generated method stub
+			return false;
+		}	
+		
+		public static void setToken(String token, String username) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	 
 	 
 	 

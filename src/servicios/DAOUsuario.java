@@ -96,11 +96,16 @@ private static DAOUsuario daousuario;
 	
 	//// LOGIN
 	
-	public static Usuario login(Usuario user) {
-		// TODO Auto-generated method stub
-		return null;
+	public Usuario login(Usuario usuario) {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "Select u From Usuario u where u.userName =?1 && u.password =?2 ";
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, usuario.getUserName());
+		query.setParameter(2, usuario.getPassword());
+		em.close();
+		return (Usuario) query.getSingleResult();
 	}
-
+	
 	
 }
 
