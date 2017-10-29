@@ -8,8 +8,6 @@ import javax.persistence.Query;
 
 import entidades.Actividad;
 import entidades.Sala;
-//import entidades.Usuario;
-//import entidades.Actividad;
 import servicios.EMF;
 
 public class DAOSala {
@@ -19,22 +17,23 @@ public class DAOSala {
 	private DAOSala(){
 	}
 	
-	public static DAOSala getInstance() {
+	public static  DAOSala getInstance() {
 		if(daoSala == null)
 			daoSala = new DAOSala();
 		return daoSala;
 	}
 	
-	public static Sala crearSala(String nombre, String direccion) {
+	public Sala crearSala(String nombre, String direccion) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
 		Sala salaA = new Sala(nombre,direccion);
 		em.persist(salaA);
 		em.getTransaction().commit();
+		em.close();
 		return salaA;
 	}
 	
-	public static Sala getSala(int id) {
+	public  Sala getSala(int id) {
 		// regresa una sala en base a su ID
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT s FROM Sala s WHERE s.id = ?"; 
@@ -54,8 +53,9 @@ public class DAOSala {
 	}
 	
 
-	public static boolean hayLugar(int idSala,Date fechaInicio, Date fechafin) {
+	public  boolean hayLugar(int idSala,Date fechaInicio, Date fechafin) {
 		EntityManager em=EMF.createEntityManager();	
+		em.getTransaction().begin();		
 		String jpql = "SELECT a1 FROM Actividad a1"
 				+ "WHERE a.lugar_id = ?1"
 				+ " AND (a1.fechaInicio < ?2" + " AND ?2 < a1.fechaFin"
@@ -64,13 +64,14 @@ public class DAOSala {
 		query.setParameter(1, idSala);
 		query.setParameter(2, fechaInicio);
 		query.setParameter(3, fechafin);
-		List<Actividad> resultados = query.getResultList(); 
+		List<Actividad> resultados = query.getResultList();
+		em.close();
 		return (resultados == null);
 	}
 	
 	/// UPDATE AND DELETE
 	
-	public static void updateSala(int id,String nombre, String direccion) {
+	public  Sala updateSala(int id,String nombre, String direccion) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();		
 		String jpql = "UPDATE Sala s SET nombre=?2, "
@@ -81,9 +82,12 @@ public class DAOSala {
         query.setParameter(3, direccion);
         query.executeUpdate();
         em.getTransaction().commit();
+		em.close();
+        Sala sl = getSala(id);
+        return sl;
 	}
 	
-	public static void deleteSala(Integer id) {
+	public  boolean deleteSala(Integer id) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
 		String jpql = "DELETE FROM Sala s WHERE s.id = ?1"; 
@@ -91,9 +95,14 @@ public class DAOSala {
         query.setParameter(1, id);
         query.executeUpdate();
         em.getTransaction().commit();
- 
+        em.close();
+        Sala sala = getSala(id);
+		if (sala == null) {
+			return  true;
+		}	
+		return false;
+       
 	}
-
 	
 	
 }

@@ -10,13 +10,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import entidades.Usuario;
 import servicios.DAOUsuario;
-
+import serviciosRest.Mensajes;
 
 @Path("/usuarios")
 public class Usuario_REST {
@@ -25,9 +24,8 @@ public class Usuario_REST {
 	@GET
 	//@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Usuario> getUsers() {
-		List<Usuario> result = DAOUsuario.getInstance().getUsuarios();
-		return result;
+	public List<Usuario> getUsuario() {
+		return DAOUsuario.getInstance().getUsuarios();
 	}
 
 	 // CREAR UN USUARIO
@@ -40,7 +38,7 @@ public class Usuario_REST {
 	if(nw!=null) {
 		return Response.status(201).entity(nw).build();
 	}
-	throw new NoExiste(nw.getId());
+	throw new Mensajes(nw.getId());
 
 	}
 	
@@ -56,7 +54,7 @@ public class Usuario_REST {
 	 	if(usuario!=null)
 			return usuario;
 		else
-			throw new NoExiste(idusuario);
+			throw new Mensajes(idusuario);
 	}
 	
 	// MODIFICA A UN USUARIO EN BASE A SU ID
@@ -69,7 +67,7 @@ public class Usuario_REST {
 	public Response updateUsuario(@PathParam("id") int id,Usuario usuario) {
 		Usuario result = DAOUsuario.getInstance().updateUsuario(id, usuario.getNombre(),usuario.getApellido());
 		if(result!=null) return Response.status(201).entity(result).build();
-		throw new NoExiste(id);
+		throw new Mensajes(id);
 	}
 	
 	// BORRA A UN USUARIO EN BASE A SU ID
@@ -84,7 +82,7 @@ public class Usuario_REST {
 		return Response.status(201).build();
 	} 
 	else {
-		throw new NoExiste(id);
+		throw new Mensajes(id);
 	}	
 	}
 	
@@ -95,17 +93,6 @@ public class Usuario_REST {
 	////////
 	
 	
-	
-	/// Para los mensajes de RecursoNoExiste
-	
-	public class NoExiste extends WebApplicationException {
-		private static final long serialVersionUID = 2463410567129045955L;
-	//  https://stackoverflow.com/questions/583973/jax-rs-jersey-how-to-customize-error-handling
-	     public NoExiste(int id) {
-	         super(Response.status(Response.Status.NOT_FOUND)
-	             .entity("El recurso con id "+id+" no fue encontrado/creado").type(MediaType.TEXT_PLAIN).build());
-	     }
-	}
 
 }
 	
