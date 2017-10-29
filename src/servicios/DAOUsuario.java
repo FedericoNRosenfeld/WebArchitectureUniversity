@@ -59,42 +59,6 @@ private static DAOUsuario daousuario;
 	}
 	
 
-	public  List<Actividad> getActividadDeUsuarioxFecha(int idUsuario,Date fecha) {
-		EntityManager em=EMF.createEntityManager();
-		Calendar calendario = Calendar.getInstance(); /// https://stackoverflow.com/questions/2619691/extract-day-from-date
-		calendario.setTime(fecha);
-		String jpql = "Select a From Actividad a where (a.duenio.id=?1) and ("
-			// en base a la fecha de inicio
-			+ "(extract(day from a.fechaInicio )= ?2"
-			+ " and extract(month from a.fechaInicio) = ?3"
-			+ " and extract(year from a.fechaInicio) = ?4) OR "
-			// en base a la fecha de fin
-			+ "(extract(day from a.fechaFin )= ?2" 
-			+ " and extract(month from a.fechaFin) = ?3"
-			+ " and extract(year from a.fechaFin) = ?4))"; 
-		Query query = em.createQuery(jpql);
-		query.setParameter(1, idUsuario);
-		query.setParameter(2, calendario.get(Calendar.DAY_OF_MONTH));
-		query.setParameter(3, calendario.get(Calendar.MONTH) + 1);
-		query.setParameter(4, calendario.get(Calendar.YEAR));
-		List<Actividad> resultados = query.getResultList();
-		em.close();
-		return resultados;
-	}
-	
-
-	public  List<Actividad> getActividadDeUsuarioEntreDias(int idUsuario, Date fecha1, Date fecha2) {
-		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT a FROM Actividad a WHERE (a.duenio.id=?1) AND a.fechaInicio >= ?2  AND a.fechaFin <= ?3 "; 
-		Query query = em.createQuery(jpql);
-		query.setParameter(1, idUsuario);
-		query.setParameter(2, fecha1);
-		query.setParameter(3, fecha2);
-		List<Actividad> resultados = query.getResultList();
-		em.close();	
-		return resultados;
-	}
-
 	/// UPDATE AND DELETE 
 	public  Usuario updateUsuario(int id,String nombre, String apellido) {
 		EntityManager em=EMF.createEntityManager();
@@ -127,23 +91,6 @@ private static DAOUsuario daousuario;
 		}	
 		return false;
        
-	}
-
-	/// TIEMPO LIBRE PARA AGREGAR UNA NUEVA ACTIVIDAD
-	public  boolean tiempoLibreUsuario(int usuario, Date fechaInicio, Date fechafin) {
-		// Optimizar para los usuarios invitados
-		EntityManager em=EMF.createEntityManager();	
-		String jpql = "SELECT a1 FROM Actividad a1"
-				+ "WHERE a.duenio_idUsuario = ?1"
-				+ " AND (a1.fechaInicio < ?2" + " AND ?2 < a1.fechaFin"
-				+ " OR a1.fechaInicio <= ?3" + " AND ?3 <= a1.fechaInicio)";
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, usuario);
-		query.setParameter(2, fechaInicio);
-		query.setParameter(3, fechafin);
-		List<Actividad> resultados = query.getResultList();
-		em.close();
-		return (resultados == null);
 	}
 
 	

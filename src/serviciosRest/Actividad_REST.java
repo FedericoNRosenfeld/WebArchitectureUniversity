@@ -1,5 +1,8 @@
 package serviciosRest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -109,8 +113,74 @@ public class Actividad_REST {
 	//  //
 	//  //
 	
+	@GET
+	//@Secured
+	@Path("/get_actividades_usuario_sobrepuestas")
+	@Produces(MediaType.APPLICATION_JSON)
+	// es la que trae Actividades si estan sobrepuestas con la fecha de inicio y fin de una nueva 
+	public List<Actividad> getActividadesSobrepuestasUsuario(@QueryParam("idUsuario") int idUsuario, @QueryParam("idActividad") int idActividad){
+		Actividad nuevaActividad = DAOActividad.getInstance().getActividad(idActividad);
+		Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
+		if(nuevaActividad!=null && usuario!=null) {
+			List<Actividad> actividadesSuperpuestas = DAOActividad.getInstance().getActividadesSobrepuestasUsuario(usuario.getId(), nuevaActividad.getId());
+			if(actividadesSuperpuestas!=null) {
+				return actividadesSuperpuestas;
+			}		
+		}
+		throw new Mensajes(idActividad);
+		
+	}
 	
 	
+	@GET
+	//@Secured
+	@Path("/get_actividades_usuario_fecha")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Actividad> getReunionesUsuarioXFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha") String fecha) {
+		
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy"); // con esto creamos un formato a la fecha que viene como string
+		try {  /// tuve que meter un try&catch por ParseException
+		Date nfecha = formatoFecha.parse(fecha); // con esto le asignamos e; formato a la fecha que viene como string
+		Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
+		List<Actividad> reuniones = DAOActividad.getInstance().getActividadDeUsuarioxFecha(usuario.getId(), nfecha);
+		if(reuniones!=null)	
+			return reuniones;
+			
+		}
+	  catch (ParseException e) {
+            e.printStackTrace();
+        }
+		 return new ArrayList<Actividad>();
+	}
+
+
+	@GET
+	//@Secured
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Actividad> getReunionesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
+
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy"); // con esto creamos un formato a la fecha que viene como string
+		;
+		try {
+			Date nfecha1 = formatoFecha.parse(fecha1);
+			Date nfecha2 = formatoFecha.parse(fecha2);
+			Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
+			if((nfecha1!=null && nfecha2!=null) && usuario !=null){
+				List<Actividad> actividades = DAOActividad.getInstance().getActividadDeUsuarioEntreDias(usuario.getId(),nfecha1, nfecha2);
+				if(actividades!=null)	
+					return actividades;
+			}
+		}	
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+
+		return new ArrayList<Actividad>();
+
+	}
+
+
 	
 	
 	
