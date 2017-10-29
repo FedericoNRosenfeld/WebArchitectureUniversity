@@ -34,18 +34,19 @@ public static void main(String[] args) {
 	//--
     Date fechaD1 = new GregorianCalendar(2018, Calendar.MARCH, 24, 9, 22).getTime();
     Date fechaD2 = new GregorianCalendar(2018, Calendar.MARCH, 25, 9, 23).getTime();
-
+    
+    DAOUsuario daou = DAOUsuario.getInstance();
     // Creacion de 10 usuarios
-    Usuario u1 = DAOUsuario.crearUsuario("Dardo","Marolio");
-    Usuario u2 = DAOUsuario.crearUsuario("Uriel","Rosenfeld");
-    Usuario u3 = DAOUsuario.crearUsuario("Daniela","Gonzalez");
-    Usuario u4 = DAOUsuario.crearUsuario("Fran","Marconi");
-    Usuario u5 = DAOUsuario.crearUsuario("Laura","Perez");
-    Usuario u6 = DAOUsuario.crearUsuario("Sofia","Perez");
-    Usuario u7 = DAOUsuario.crearUsuario("Dana","Diaz");
-    Usuario u8 = DAOUsuario.crearUsuario("Miguel","Peralta");
-	Usuario u9 = DAOUsuario.crearUsuario("Belen","Babbicola");
-    Usuario u10 = DAOUsuario.crearUsuario("Raul","Alonso");
+    Usuario u1 = daou.crearUsuario("Dardo","Marolio","DardoM","1234");
+    Usuario u2 = daou.crearUsuario("Uriel","Rosenfeld","UrielR","1234");
+    Usuario u3 = daou.crearUsuario("Daniela","Gonzalez","DanielaG","1234");
+    Usuario u4 = daou.crearUsuario("Fran","Marconi","FranM","1234");
+    Usuario u5 = daou.crearUsuario("Laura","Perez","LauraP","1234");
+    Usuario u6 = daou.crearUsuario("Sofia","Perez","SofiaP","1234");
+    Usuario u7 = daou.crearUsuario("Dana","Diaz","DanaD","1234");
+    Usuario u8 = daou.crearUsuario("Miguel","Peralta","MiguelP","1234");
+	Usuario u9 = daou.crearUsuario("Belen","Babbicola","BelenB","1234");
+    Usuario u10 = daou.crearUsuario("Raul","Alonso","RaulA","1234");
 
     System.out.println(u1);
     

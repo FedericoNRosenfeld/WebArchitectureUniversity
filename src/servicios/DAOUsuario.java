@@ -19,7 +19,7 @@ private static DAOUsuario daousuario;
 		return daousuario;
 	}
 	
-	public static Usuario crearUsuario(String nombre, String apellido,String userName, String password) {
+	public  Usuario crearUsuario(String nombre, String apellido,String userName, String password) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
 		Usuario nu= new Usuario(nombre,apellido,userName,password);
@@ -29,7 +29,7 @@ private static DAOUsuario daousuario;
 		return nu;
 	}
 
-	public static List<Usuario> getUsuarios() {
+	public  List<Usuario> getUsuarios() {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM Usuario u"; 
 	    Query query = em.createQuery(jpql); 
@@ -49,7 +49,7 @@ private static DAOUsuario daousuario;
 //	}
 //	
 	
-	public static Usuario getUsuario(int idUsuario) {
+	public  Usuario getUsuario(int idUsuario) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "Select u From Usuario u where u.idUsuario =?1";
 		Query query = em.createQuery(jpql); 
@@ -59,7 +59,7 @@ private static DAOUsuario daousuario;
 	}
 	
 
-	public static List<Actividad> getActividadDeUsuarioxFecha(int idUsuario,Date fecha) {
+	public  List<Actividad> getActividadDeUsuarioxFecha(int idUsuario,Date fecha) {
 		EntityManager em=EMF.createEntityManager();
 		Calendar calendario = Calendar.getInstance(); /// https://stackoverflow.com/questions/2619691/extract-day-from-date
 		calendario.setTime(fecha);
@@ -96,7 +96,7 @@ private static DAOUsuario daousuario;
 	}
 
 	/// UPDATE AND DELETE 
-	public static void updateUsuario(int id,String nombre, String apellido) {
+	public  Usuario updateUsuario(int id,String nombre, String apellido) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();		
 		String jpql = "UPDATE Usuario u SET u.nombre=?2, " + "u.apellido=?3 WHERE u.idUsuario = ?1"; 
@@ -107,6 +107,8 @@ private static DAOUsuario daousuario;
         query.executeUpdate();
         em.getTransaction().commit();
         em.close();
+        Usuario usuario = getUsuario(id);
+        return usuario;
 
 	}
 	
@@ -127,7 +129,8 @@ private static DAOUsuario daousuario;
        
 	}
 
-	public static boolean tiempoLibreUsuario(int usuario, Date fechaInicio, Date fechafin) {
+	/// TIEMPO LIBRE PARA AGREGAR UNA NUEVA ACTIVIDAD
+	public  boolean tiempoLibreUsuario(int usuario, Date fechaInicio, Date fechafin) {
 		// Optimizar para los usuarios invitados
 		EntityManager em=EMF.createEntityManager();	
 		String jpql = "SELECT a1 FROM Actividad a1"

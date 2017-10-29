@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,27 +23,31 @@ public class Usuario_REST {
 	
 	// TODOS LOS USUARIOS
 	@GET
-	@Secured
+	//@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> getUsers() {
-		List<User> result = DAOUsuario.getInstance().getUsuarios();
+	public List<Usuario> getUsers() {
+		List<Usuario> result = DAOUsuario.getInstance().getUsuarios();
 		return result;
 	}
 
 	 // CREAR UN USUARIO
 	@POST
-	@Secured
+	//@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response crearusuario(Usuario usuario) {
-	Usuario usuario= DAOUsuario.getInstance().crearusuario(usuario.getNombre(),usuario.getApellido(),usuario.getUserName(),usuario.getPassword());
-	if(usuario!=null) {
-		return Response.status(201).entity(usuario).build();
+	Usuario nw = DAOUsuario.getInstance().crearUsuario(usuario.getNombre(),usuario.getApellido(),usuario.getUserName(),usuario.getPassword());
+	if(nw!=null) {
+		return Response.status(201).entity(nw).build();
 	}
+	throw new NoExiste(nw.getId());
+
 	}
+	
+	
 	// TRAE A UN USUARIO EN BASE A SU ID
 	@GET
-	@Secured
+	//@Secured
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Usuario getUsuario(@PathParam("id") String id) {
@@ -50,18 +56,18 @@ public class Usuario_REST {
 	 	if(usuario!=null)
 			return usuario;
 		else
-			throw new NoExiste(id);
+			throw new NoExiste(idusuario);
 	}
 	
 	// MODIFICA A UN USUARIO EN BASE A SU ID
 
 	@PUT
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateUsuario(@PathParam("id") int id,Usuario user) {
-		Usuario result = UsuarioDAO.getInstance().update(id, user);
+	public Response updateUsuario(@PathParam("id") int id,Usuario usuario) {
+		Usuario result = DAOUsuario.getInstance().updateUsuario(id, usuario.getNombre(),usuario.getApellido());
 		if(result!=null) return Response.status(201).entity(result).build();
 		throw new NoExiste(id);
 	}
@@ -69,7 +75,7 @@ public class Usuario_REST {
 	// BORRA A UN USUARIO EN BASE A SU ID
 
 	@DELETE
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteUsuario(@PathParam("id") int id) {
@@ -82,24 +88,29 @@ public class Usuario_REST {
 	}	
 	}
 	
+	
+	////////
+	////////   	Hacer el GET para el login
+	////////
+	////////
+	
+	
+	
 	/// Para los mensajes de RecursoNoExiste
 	
 	public class NoExiste extends WebApplicationException {
+		private static final long serialVersionUID = 2463410567129045955L;
 	//  https://stackoverflow.com/questions/583973/jax-rs-jersey-how-to-customize-error-handling
 	     public NoExiste(int id) {
 	         super(Response.status(Response.Status.NOT_FOUND)
-	             .entity("El recurso con id "+id+" no fue encontrado").type(MediaType.TEXT_PLAIN).build());
+	             .entity("El recurso con id "+id+" no fue encontrado/creado").type(MediaType.TEXT_PLAIN).build());
 	     }
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
+	
+	
+	
+	
+	
 

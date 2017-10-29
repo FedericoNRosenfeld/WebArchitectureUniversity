@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 //import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
@@ -27,9 +28,7 @@ public class Calendario /*implements Serializable */{
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Usuario duenio;
 
-    
-	//@OneToMany         modificamos esto
-	@ManyToMany(mappedBy="calendario",cascade=CascadeType.PERSIST)
+   	@OneToMany(mappedBy="calendario",cascade=CascadeType.PERSIST)
 	private List<Actividad> actividades;
 
 	public Calendario(){

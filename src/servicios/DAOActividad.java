@@ -32,14 +32,14 @@ public class DAOActividad {
 		Actividad na = null; 
 		/// Busqueda via ID de Usuario,Sala y Calendario
 		DAOUsuario.getInstance();
-		Usuario u= DAOUsuario.getUsuario(usuario);
+		Usuario u= DAOUsuario.getInstance().getUsuario(usuario);
 		DAOSala.getInstance();
 		Sala s= DAOSala.getSala(sala.getId());
 		DAOCalendario.getInstance();
 		Calendario c =DAOCalendario.getCalendario(idCalendario);
 		// COnsultas para evitar que se solapen con otras actividades 
 		if (DAOSala.hayLugar(s.getId(),fechaInicio, fechafin)) {
-			if ( DAOUsuario.tiempoLibreUsuario(usuario, fechaInicio,fechafin)){ 
+			if ( DAOUsuario.getInstance().tiempoLibreUsuario(usuario, fechaInicio,fechafin)){ 
 				na = new Actividad(nombre,u,fechaInicio,fechafin,c);
 				na.setLugar(s);
 				em.persist(na);

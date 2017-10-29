@@ -17,7 +17,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="ACTIVIDAD")
-
 public class Actividad /*implements Serializable*/ {
 
 	//private static final long serialVersionUID = -1269548906097037547L;
@@ -42,7 +41,7 @@ public class Actividad /*implements Serializable*/ {
 	// se saco la idea de usuarios pendientes y que solo quede todo en invitados
 	//@ManyToOne -    porque un usuario puede tener muchos calendarios y un calendario muchos usuarios
 	
-	@ManyToMany(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Calendario calendario;
 		
 	public Actividad() {}

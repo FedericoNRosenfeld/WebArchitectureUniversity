@@ -31,7 +31,7 @@ public class Usuario /*implements Serializable*/ {
     private List<Calendario> calendarios;
 	// Invitacion
 	//@OneToMany
-	@ManyToMany(mappedBy ="usuario_i", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy ="usuario_i", cascade=CascadeType.PERSIST)
 	private List<Invitacion> listInvitaciones;
 	// Actividad
 	@ManyToMany (mappedBy ="invitados", cascade=CascadeType.PERSIST)
