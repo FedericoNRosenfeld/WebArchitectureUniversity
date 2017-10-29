@@ -21,17 +21,28 @@ public class DAOCalendario {
 		return daocalendario;
 	}
 
-	
-	public static Calendario crearCalendario(String nombre, Usuario usuario) {
+
+	public List<Calendario> getCalendarios() {
+			EntityManager em=EMF.createEntityManager();
+			String jpql = "SELECT c FROM Calendario c"; 
+		    Query query = em.createQuery(jpql); 
+		    List<Calendario> resultados = query.getResultList();
+		    em.close();
+		    return resultados;
+		    
+		}
+
+	public  Calendario crearCalendario(String nombre, Usuario usuario) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
 		Calendario nc = new Calendario(nombre, usuario);
 		em.persist(nc);
 		em.getTransaction().commit();
+		em.close();
 		return nc;
 	}
 	
-	public static Calendario getCalendario(int idCalendario) {
+	public  Calendario getCalendario(int idCalendario) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "Select c From Calendario c where c.id =?1";
 		Query query = em.createQuery(jpql); 
@@ -43,7 +54,7 @@ public class DAOCalendario {
 
 }
 
-	public static List<Calendario> getCalendariosXusuario(int idUsuario) {
+	public  List<Calendario> getCalendariosXusuario(int idUsuario) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "Select c From Calendario c where (c.duenio_idUsuario = ?1) ";
 		Query query = em.createQuery(jpql);
@@ -55,19 +66,24 @@ public class DAOCalendario {
 	
 	///UPDATE ADN DELETE
 
-		public static void updateCalendario(int idCalendario,String nombre, int duenio) {
+		public  Calendario updateCalendario(int idCalendario,String nombre, int duenio) {
+			Usuario usuario = DAOUsuario.getInstance().getUsuario(duenio);
 			EntityManager em=EMF.createEntityManager();
 			em.getTransaction().begin();		
 			String jpql = "UPDATE Calendario c SET c.nombre=?2, c.duenio_idUsuario=?3 WHERE c.id = ?1"; 
 	        Query query = em.createQuery(jpql);
 	        query.setParameter(1, idCalendario);
 	        query.setParameter(2, nombre);
-	        query.setParameter(3, duenio);
+	        query.setParameter(3, usuario.getId());
 	        query.executeUpdate();
 	        em.getTransaction().commit();
+			em.close();
+			Calendario calen = getCalendario(idCalendario);
+	        return calen;
+
 		}
 		
-		public static void deleteCalendario(Integer idCalendario) {
+		public  boolean deleteCalendario(Integer idCalendario) {
 			EntityManager em=EMF.createEntityManager();
 			em.getTransaction().begin();
 			em.getTransaction().begin();
@@ -76,9 +92,15 @@ public class DAOCalendario {
 	        query.setParameter(1, idCalendario);
 	        query.executeUpdate();
 	        em.getTransaction().commit();
+			em.close();
+			Calendario calen = getCalendario(idCalendario);				
+			if (calen == null) {
+					return  true;
+				}	
+				return false;
 	       
 		}
-	
+
 	
 	
 	
