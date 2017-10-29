@@ -30,12 +30,12 @@ public class DAOActividad {
 	public Actividad crearActividad(String nombre,int idCalendario, int usuario ,Date fechaInicio, Date fechafin ,Sala sala ) {
 		EntityManager em=EMF.createEntityManager();	
 		em.getTransaction().begin();
-		Actividad na = null; 
+		Actividad na1 = null; 
 		/// Busqueda via ID de Usuario,Sala y Calendario
 		Usuario u= DAOUsuario.getInstance().getUsuario(usuario);
 		Sala s= DAOSala.getInstance().getSala(sala.getId());
 		Calendario c =DAOCalendario.getInstance().getCalendario(idCalendario);
-		Actividad na1 = new Actividad(nombre,u,fechaInicio,fechafin,c);
+		na1 = new Actividad(nombre,u,fechaInicio,fechafin,c);
 		na1.setLugar(s);
 		em.persist(na1);
 		em.getTransaction().commit();

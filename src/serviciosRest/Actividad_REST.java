@@ -156,6 +156,7 @@ public class Actividad_REST {
 
 	@GET
 	//@Secured
+	@Path("/actividades_usuario_entre_fechas")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Actividad> getReunionesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
 
