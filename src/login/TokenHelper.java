@@ -6,7 +6,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 public class TokenHelper {
 	
-
+	
 	 public static String generarToken(String userName) {
 	        long minutes = System.currentTimeMillis() / 1000 / 60;
 	        String key = UUID.randomUUID().toString().toUpperCase() + "|" + userName + "|" + minutes;
@@ -17,10 +17,10 @@ public class TokenHelper {
 	    }
 	 
 
-		public static boolean isValidoToken(String token) {
-			// TODO Auto-generated method stub
-			return false;
-		}	
+	public static boolean isValidoToken(String token) {
+		// TODO Auto-generated method stub
+	        return false;
+	    }
 		
 		public static void setToken(String token, String username) {
 			// TODO Auto-generated method stub
