@@ -122,8 +122,8 @@ private static DAOUsuario daousuario;
 		em.close();
 		return (Usuario) query.getSingleResult();
 	}
-	
-	
+
+
 }
 
 
