@@ -25,7 +25,7 @@ public class Usuario_REST {
 	@GET
 	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Usuario> getUsuario() {
+	public List<Usuario> getUsuarios() {
 		return DAOUsuario.getInstance().getUsuarios();
 	}
 
