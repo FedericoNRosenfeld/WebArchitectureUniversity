@@ -41,7 +41,9 @@ public class Sala_REST {
 		if(nw!=null) {
 			return Response.status(201).entity(nw).build();
 		}
-		throw new Mensajes(nw.getId());
+		throw  new Mensajes(1,1);
+		/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 	}
 		
 
@@ -57,7 +59,9 @@ public class Sala_REST {
 		if(sala!=null)
 			return sala;
 		else
-			throw new Mensajes(idSala);
+			throw new Mensajes(2,idSala);
+		/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 	}
 
 	// MODIFICA A UNA SALA EN BASE A SU ID
@@ -67,10 +71,15 @@ public class Sala_REST {
 		@Path("/{id}")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response updateSala(@PathParam("id") int id,Sala sala) {
-			Sala result = DAOSala.getInstance().updateSala(id, sala.getNombre(),sala.getDireccion());
-			if(result!=null) return Response.status(201).entity(result).build();
-			throw new Mensajes(id);
+		public Response updateSala(@PathParam("id") String id,Sala sala) {
+			int idSala = Integer.valueOf(id);
+			Sala result = DAOSala.getInstance().updateSala(idSala, sala.getNombre(),sala.getDireccion());
+			if(result!=null) { 
+				return Response.status(201).entity(result).build();
+			}
+			throw new Mensajes(2,idSala);
+			/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 		}
 		
 		// BORRA A UNA SALA EN BASE A SU ID
@@ -79,13 +88,16 @@ public class Sala_REST {
 		@Secured
 		@Path("/{id}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response deleteSala(@PathParam("id") int id) {
-		boolean resultado= DAOSala.getInstance().deleteSala(id);
+		public Response deleteSala(@PathParam("id") String id) {
+		int idSala = Integer.valueOf(id);
+		boolean resultado= DAOSala.getInstance().deleteSala(idSala);
 		if(resultado) {
 			return Response.status(201).build();
 		} 
 		else {
-			throw new Mensajes(id);
+			throw new Mensajes(3,idSala);
+			/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 		}	
 		}
 		

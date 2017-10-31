@@ -21,14 +21,16 @@ import javax.ws.rs.core.Response;
 import entidades.Calendario;
 import entidades.Sala;
 import entidades.Usuario;
-import login.Secured;
 import entidades.Actividad;
+import login.Secured;
+
 
 import servicios.DAOCalendario;
 import servicios.DAOSala;
 import servicios.DAOUsuario;
 import servicios.DAOActividad;
 
+import serviciosRest.Obj_Actividad;
 import serviciosRest.Mensajes;
 
 @Path("/actividades")
@@ -66,7 +68,9 @@ public class Actividad_REST {
 			}
 	
 	} catch(Exception e) {
-		 throw new Mensajes(404);
+		 throw  new Mensajes(1,1);
+		/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 	}
 	return null;
 
@@ -84,7 +88,9 @@ public class Actividad_REST {
 	 	if(actividad!=null)
 			return actividad;
 		else
-			throw new Mensajes(idActividad);
+			throw  new Mensajes(2,idActividad);
+		/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 	}
 	
 	// MODIFICA A UN ACTIVIDAD EN BASE A SU ID
@@ -94,18 +100,21 @@ public class Actividad_REST {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateActividad(@PathParam("id") int id,Obj_Actividad actividad) {
+	public Response updateActividad(@PathParam("id") String id,Obj_Actividad actividad) {
+	 	int idActividad = Integer.valueOf(id);
 		Date fechaInicio;
 		Date fechaFin;
 		try {
 			  	fechaInicio =  formatoFecha.parse(actividad.getFechaInicio()); 
 			  	fechaFin =  formatoFecha.parse(actividad.getFechaFin());
-				Actividad result = DAOActividad.getInstance().updateActividad( id, actividad.getNombre(),actividad.getCalendario(),actividad.getDuenio() ,fechaInicio,fechaFin,actividad.getLugar());
+				Actividad result = DAOActividad.getInstance().updateActividad( idActividad, actividad.getNombre(),actividad.getCalendario(),actividad.getDuenio() ,fechaInicio,fechaFin,actividad.getLugar());
 				if(result!=null) 
 					return Response.status(201).entity(result).build();
 				}
 		catch(Exception e) {
-			throw new Mensajes(id);
+			throw  new Mensajes(2,idActividad);
+			/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 		}
 		return null;
 		}
@@ -115,13 +124,16 @@ public class Actividad_REST {
 	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteActividad(@PathParam("id") int id) {
-	boolean resultado= DAOActividad.getInstance().deleteActividad(id);
+	public Response deleteActividad(@PathParam("id") String id) {
+	int idActividad = Integer.valueOf(id);
+	boolean resultado= DAOActividad.getInstance().deleteActividad(idActividad);
 	if(resultado) {
 		return Response.status(201).build();
 	} 
 	else {
-		throw new Mensajes(id);
+		throw  new Mensajes(3,idActividad);
+		/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 	}	
 	}
 	
@@ -138,7 +150,9 @@ public class Actividad_REST {
 	@Path("/get_actividades_usuario_sobrepuestas")
 	@Produces(MediaType.APPLICATION_JSON)
 	// es la que trae Actividades si estan sobrepuestas con la fecha de inicio y fin de una nueva 
-	public List<Actividad> getActividadesSobrepuestasUsuario(@QueryParam("idUsuario") int idUsuario, @QueryParam("idActividad") int idActividad){
+	public List<Actividad> getActividadesSobrepuestasUsuario(@QueryParam("idUsuario") String idU, @QueryParam("idActividad") String idA){
+		int idActividad = Integer.valueOf(idA);
+		int idUsuario = Integer.valueOf(idU);
 		Actividad nuevaActividad = DAOActividad.getInstance().getActividad(idActividad);
 		Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
 		if(nuevaActividad!=null && usuario!=null) {
@@ -147,7 +161,18 @@ public class Actividad_REST {
 				return actividadesSuperpuestas;
 			}		
 		}
-		throw new Mensajes(idActividad);
+		else {
+			if (nuevaActividad!=null ){
+				new Mensajes(3,idActividad);
+			}
+			else{ 
+			    new Mensajes(3,idActividad);
+			  }
+		}
+		return null;
+		
+		/// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste
+
 		
 	}
 	

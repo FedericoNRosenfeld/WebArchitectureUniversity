@@ -39,7 +39,9 @@ public class Usuario_REST {
 	if(nw!=null) {
 		return Response.status(201).entity(nw).build();
 	}
-	throw new Mensajes(nw.getId());
+	throw new Mensajes(1,1);
+	 /// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste 
+
 
 	}
 	
@@ -55,7 +57,9 @@ public class Usuario_REST {
 	 	if(usuario!=null)
 			return usuario;
 		else
-			throw new Mensajes(idusuario);
+			throw new Mensajes(2,idusuario);
+   	 /// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste 
+
 	}
 	
 	// MODIFICA A UN USUARIO EN BASE A SU ID
@@ -65,10 +69,14 @@ public class Usuario_REST {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateUsuario(@PathParam("id") int id,Usuario usuario) {
-		Usuario result = DAOUsuario.getInstance().updateUsuario(id, usuario.getNombre(),usuario.getApellido());
-		if(result!=null) return Response.status(201).entity(result).build();
-		throw new Mensajes(id);
+	public Response updateUsuario(@PathParam("id") String id,Usuario usuario) {
+	 	int idusuario = Integer.valueOf(id);
+		Usuario result = DAOUsuario.getInstance().updateUsuario(idusuario, usuario.getNombre(),usuario.getApellido());
+		if(result!=null) {
+			return Response.status(201).entity(result).build();
+		}
+		throw new Mensajes(2,idusuario);
+	   	 /// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste 
 	}
 	
 	// BORRA A UN USUARIO EN BASE A SU ID
@@ -77,23 +85,19 @@ public class Usuario_REST {
 	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteUsuario(@PathParam("id") int id) {
-	boolean resultado= DAOUsuario.getInstance().deleteUsuario(id);
+	public Response deleteUsuario(@PathParam("id") String id) {
+	 	int idusuario = Integer.valueOf(id);
+
+	boolean resultado= DAOUsuario.getInstance().deleteUsuario(idusuario);
 	if(resultado) {
 		return Response.status(201).build();
 	} 
 	else {
-		throw new Mensajes(id);
+		throw new Mensajes(3,idusuario);
+	   	 /// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste 
 	}	
 	}
-	
-	
-	////////
-	////////   	Hacer el GET para el login
-	////////
-	////////
-	
-	
+
 
 }
 	
