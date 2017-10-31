@@ -132,12 +132,12 @@ public class DAOActividad {
 
 	/// UPDATE AND DELETE 
 
-		public  Actividad updateActividad(int id,String nombre,int idCalendario, int idusuario ,Date fechaInicio, Date fechafin ,Sala sala ) {
+		public  Actividad updateActividad(int id,String nombre,int idCalendario, int idusuario ,Date fechaInicio, Date fechafin ,int sala ) {
 			Actividad act = getActividad(id);
 			EntityManager em=EMF.createEntityManager();
 			em.getTransaction().begin();
 			Calendario calendario = DAOCalendario.getInstance().getCalendario(idCalendario);
-			Sala sala1 = DAOSala.getInstance().getSala(sala.getId());
+			Sala sala1 = DAOSala.getInstance().getSala(sala);
 			Usuario duenio = DAOUsuario.getInstance().getUsuario(idusuario);
 			act.setCalendario(calendario);
 			act.setDuenio(duenio);

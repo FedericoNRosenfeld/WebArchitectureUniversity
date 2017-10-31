@@ -33,8 +33,9 @@ import serviciosRest.Mensajes;
 
 @Path("/actividades")
 public class Actividad_REST {
-	
-	// TODOS LOS ActividadS
+	private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy:hh-mm"); // con esto creamos un formato a la fecha que viene como string
+
+	// TODOS LAS ACTIVIDADES
 	@GET
 	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
@@ -50,15 +51,24 @@ public class Actividad_REST {
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response crearActividad(Actividad actividad) {
-	Usuario duenio = DAOUsuario.getInstance().getUsuario(actividad.getDuenio().getId());
-	Calendario calendario = DAOCalendario.getInstance().getCalendario(actividad.getCalendario().getId());
-	Sala sala = DAOSala.getInstance().getSala(actividad.getLugar().getId());
-	Actividad nw = DAOActividad.getInstance().crearActividad(actividad.getNombre(),calendario.getId(),duenio.getId(),actividad.getFechaInicio(),actividad.getFechaFin(),sala);
-	if(nw!=null) {
-		return Response.status(201).entity(nw).build();
+	public Response crearActividad(Obj_Actividad actividad) {
+	final Date fechaInicio;
+	final Date fechaFin;
+	try {
+		  fechaInicio =  formatoFecha.parse(actividad.getFechaInicio()); 
+		  fechaFin =  formatoFecha.parse(actividad.getFechaFin());
+	      Usuario duenio = DAOUsuario.getInstance().getUsuario(actividad.getDuenio());
+		  Calendario calendario = DAOCalendario.getInstance().getCalendario(actividad.getCalendario());
+		  Sala sala = DAOSala.getInstance().getSala(actividad.getLugar());
+		  Actividad nw = DAOActividad.getInstance().crearActividad(actividad.getNombre(),calendario.getId(),duenio.getId(),fechaInicio,fechaFin,sala);
+		  if(nw!=null) {
+				return Response.status(201).entity(nw).build();
+			}
+	
+	} catch(Exception e) {
+		 throw new Mensajes(404);
 	}
-	throw new Mensajes(nw.getId());
+	return null;
 
 	}
 	
@@ -84,12 +94,21 @@ public class Actividad_REST {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateActividad(@PathParam("id") int id,Actividad actividad) {
-		Actividad result = DAOActividad.getInstance().updateActividad( id, actividad.getNombre(),actividad.getCalendario().getId(),actividad.getDuenio().getId() ,actividad.getFechaInicio(),actividad.getFechaFin() ,actividad.getLugar());
-		if(result!=null) return Response.status(201).entity(result).build();
-		throw new Mensajes(id);
-	}
-	
+	public Response updateActividad(@PathParam("id") int id,Obj_Actividad actividad) {
+		Date fechaInicio;
+		Date fechaFin;
+		try {
+			  	fechaInicio =  formatoFecha.parse(actividad.getFechaInicio()); 
+			  	fechaFin =  formatoFecha.parse(actividad.getFechaFin());
+				Actividad result = DAOActividad.getInstance().updateActividad( id, actividad.getNombre(),actividad.getCalendario(),actividad.getDuenio() ,fechaInicio,fechaFin,actividad.getLugar());
+				if(result!=null) 
+					return Response.status(201).entity(result).build();
+				}
+		catch(Exception e) {
+			throw new Mensajes(id);
+		}
+		return null;
+		}
 	// BORRA A UN ACTIVIDAD EN BASE A SU ID
 
 	@DELETE
@@ -139,7 +158,6 @@ public class Actividad_REST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Actividad> getReunionesUsuarioXFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha") String fecha) {
 		
-		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy"); // con esto creamos un formato a la fecha que viene como string
 		try {  /// tuve que meter un try&catch por ParseException
 		Date nfecha = formatoFecha.parse(fecha); // con esto le asignamos e; formato a la fecha que viene como string
 		Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
@@ -161,8 +179,6 @@ public class Actividad_REST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Actividad> getReunionesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
 
-		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy"); // con esto creamos un formato a la fecha que viene como string
-		;
 		try {
 			Date nfecha1 = formatoFecha.parse(fecha1);
 			Date nfecha2 = formatoFecha.parse(fecha2);
