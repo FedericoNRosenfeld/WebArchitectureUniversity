@@ -9,7 +9,7 @@ public class Mensajes extends WebApplicationException{
 		private static final long serialVersionUID = 2463410567129045955L;
 		//  https://stackoverflow.com/questions/583973/jax-rs-jersey-how-to-customize-error-handling
 	     public  Mensajes(int opcion, int id) {
-	    	 /// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste , 4 RecursoDuplicado
+	    	 /// 1 RecursoNoCreado , 2 RecursoNoEncontrado , 3 RecursoNoExiste 
 	    	 switch (opcion) {
 	         case 1:
 	        	 new RecursoNoCreado();
@@ -23,9 +23,6 @@ public class Mensajes extends WebApplicationException{
 	        	 new RecursoNoExiste(id);
 	         break;
 		         
-	         case 4:
-	        	 new RecursoDuplicado(id);
-	         break;
 	    	 }
 	   }
 	    	
