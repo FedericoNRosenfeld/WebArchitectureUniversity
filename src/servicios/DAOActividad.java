@@ -90,23 +90,7 @@ public class DAOActividad {
 		return resultados;
 		}
 	
-	/// TIEMPO LIBRE PARA AGREGAR UNA NUEVA ACTIVIDAD
-		public  boolean tiempoLibreUsuario(int usuario, Date fechaInicio, Date fechafin) {
-			// Optimizar para los usuarios invitados
-			EntityManager em=EMF.createEntityManager();	
-			String jpql = "SELECT a1 FROM Actividad a1"
-					+ "WHERE a.duenio_idUsuario = ?1"
-					+ " AND (a1.fechaInicio < ?2" + " AND ?2 < a1.fechaFin"
-					+ " OR a1.fechaInicio <= ?3" + " AND ?3 <= a1.fechaInicio)";
-			Query query = em.createQuery(jpql); 
-			query.setParameter(1, usuario);
-			query.setParameter(2, fechaInicio);
-			query.setParameter(3, fechafin);
-			List<Actividad> resultados = query.getResultList();
-			em.close();
-			return (resultados == null);
-		}
-
+	
 	/// ACTIVIDADES DE UN USUARIO EN UNA FECHA DADA
 
 	public  List<Actividad> getActividadDeUsuarioxFecha(int idUsuario,Date fecha) {
