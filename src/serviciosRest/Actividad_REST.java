@@ -147,7 +147,7 @@ public class Actividad_REST {
 	
 	@GET
 	@Secured
-	@Path("/get_actividades_usuario_Superpuestas")
+	@Path("/get_actividades_usuario_superpuestas")
 	@Produces(MediaType.APPLICATION_JSON)
 	// es la que trae Actividades si estan Superpuestas con la fecha de inicio y fin de una nueva 
 	public List<Actividad> getActividadesSuperpuestasUsuario(@QueryParam("idUsuario") String idU, @QueryParam("idActividad") String idA){
