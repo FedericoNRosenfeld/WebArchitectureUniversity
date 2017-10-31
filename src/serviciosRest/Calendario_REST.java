@@ -36,8 +36,8 @@ public class Calendario_REST {
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response crearCalendario(Calendario calendario) {
-	Usuario duenio = DAOUsuario.getInstance().getUsuario(calendario.getDuenio().getId());	
+	public Response crearCalendario(Obj_Calendario calendario) {	
+	Usuario duenio = DAOUsuario.getInstance().getUsuario(calendario.getDuenio());	
 	Calendario nw = DAOCalendario.getInstance().crearCalendario(calendario.getNombre(),duenio);
 	if(nw!=null) {
 		return Response.status(201).entity(nw).build();
@@ -68,8 +68,8 @@ public class Calendario_REST {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCalendario(@PathParam("id") int id,Calendario Calendario) {
-		Calendario result = DAOCalendario.getInstance().updateCalendario(id, Calendario.getNombre(),Calendario.getDuenio().getId());
+	public Response updateCalendario(@PathParam("id") int id,Obj_Calendario Calendario) {
+		Calendario result = DAOCalendario.getInstance().updateCalendario(id, Calendario.getNombre(),Calendario.getDuenio());
 		if(result!=null) return Response.status(201).entity(result).build();
 		throw new Mensajes(id);
 	}
