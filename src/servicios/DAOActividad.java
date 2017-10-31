@@ -73,9 +73,9 @@ public class DAOActividad {
 		return resultados;
 	}	
 	
-	/// Referentes a Sobreposicion
+	/// Referentes a Superposicion
 	
-	public List<Actividad> getActividadesSobrepuestasUsuario(int usuario, int actividad) {
+	public List<Actividad> getActividadesSuperpuestasUsuario(int usuario, int actividad) {
 		EntityManager em=EMF.createEntityManager();	
 		String jpql = "SELECT a1 FROM Actividad a1 , Actividad a2 "
 				+ "WHERE a.duenio_idUsuario = ?1"

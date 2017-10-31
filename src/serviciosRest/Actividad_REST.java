@@ -147,16 +147,16 @@ public class Actividad_REST {
 	
 	@GET
 	@Secured
-	@Path("/get_actividades_usuario_sobrepuestas")
+	@Path("/get_actividades_usuario_Superpuestas")
 	@Produces(MediaType.APPLICATION_JSON)
-	// es la que trae Actividades si estan sobrepuestas con la fecha de inicio y fin de una nueva 
-	public List<Actividad> getActividadesSobrepuestasUsuario(@QueryParam("idUsuario") String idU, @QueryParam("idActividad") String idA){
+	// es la que trae Actividades si estan Superpuestas con la fecha de inicio y fin de una nueva 
+	public List<Actividad> getActividadesSuperpuestasUsuario(@QueryParam("idUsuario") String idU, @QueryParam("idActividad") String idA){
 		int idActividad = Integer.valueOf(idA);
 		int idUsuario = Integer.valueOf(idU);
 		Actividad nuevaActividad = DAOActividad.getInstance().getActividad(idActividad);
 		Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
 		if(nuevaActividad!=null && usuario!=null) {
-			List<Actividad> actividadesSuperpuestas = DAOActividad.getInstance().getActividadesSobrepuestasUsuario(usuario.getId(), nuevaActividad.getId());
+			List<Actividad> actividadesSuperpuestas = DAOActividad.getInstance().getActividadesSuperpuestasUsuario(usuario.getId(), nuevaActividad.getId());
 			if(actividadesSuperpuestas!=null) {
 				return actividadesSuperpuestas;
 			}		
