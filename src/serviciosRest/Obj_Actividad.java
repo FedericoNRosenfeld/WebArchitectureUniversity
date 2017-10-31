@@ -14,7 +14,7 @@ public class Obj_Actividad {
 			private int calendario;
 			@JsonCreator
 			public Obj_Actividad(@JsonProperty("nombre")String nombre, @JsonProperty("duenio") int id_duenio,
-								 @JsonProperty("fechaIncial")String fechai, @JsonProperty("fechaFinal") String fechaf,
+								 @JsonProperty("fechaInicio")String fechai, @JsonProperty("fechaFin") String fechaf,
 								 @JsonProperty("lugar")int sala, @JsonProperty("calendario") int calendario) {
 				this.nombre = nombre;
 				this.duenio = id_duenio;

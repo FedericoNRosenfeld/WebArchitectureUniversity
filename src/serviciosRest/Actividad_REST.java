@@ -181,14 +181,14 @@ public class Actividad_REST {
 	@Secured
 	@Path("/get_actividades_usuario_fecha")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Actividad> getReunionesUsuarioXFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha") String fecha) {
+	public List<Actividad> getActividadesUsuarioXFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha") String fecha) {
 		
 		try {  /// tuve que meter un try&catch por ParseException
 		Date nfecha = formatoFecha.parse(fecha); // con esto le asignamos e; formato a la fecha que viene como string
 		Usuario usuario = DAOUsuario.getInstance().getUsuario(idUsuario);
-		List<Actividad> reuniones = DAOActividad.getInstance().getActividadDeUsuarioxFecha(usuario.getId(), nfecha);
-		if(reuniones!=null)	
-			return reuniones;
+		List<Actividad> actividades = DAOActividad.getInstance().getActividadDeUsuarioxFecha(usuario.getId(), nfecha);
+		if(actividades!=null)	
+			return actividades;
 			
 		}
 	  catch (ParseException e) {
@@ -202,7 +202,7 @@ public class Actividad_REST {
 	@Secured
 	@Path("/actividades_usuario_entre_fechas")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Actividad> getReunionesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
+	public List<Actividad> getActividadesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
 
 		try {
 			Date nfecha1 = formatoFecha.parse(fecha1);
