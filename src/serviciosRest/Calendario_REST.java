@@ -29,7 +29,7 @@ public class Calendario_REST {
 	@GET
 	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Calendario> getCalendario() {
+	public List<Calendario> getCalendarios() {
 		return DAOCalendario.getInstance().getCalendarios();
 	}
 

@@ -16,7 +16,7 @@ import servicios.EMF;
 
 
 public class DAOActividad {
-	
+
 	private static DAOActividad daoactividad;
 
 	private DAOActividad(){}
@@ -28,9 +28,9 @@ public class DAOActividad {
 	}
 
 	public Actividad crearActividad(String nombre,int idCalendario, int usuario ,Date fechaInicio, Date fechafin ,Sala sala ) {
-		EntityManager em=EMF.createEntityManager();	
+		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
-		Actividad na1 = null; 
+		Actividad na1 = null;
 		/// Busqueda via ID de Usuario,Sala y Calendario
 		Usuario u= DAOUsuario.getInstance().getUsuario(usuario);
 		Sala s= DAOSala.getInstance().getSala(sala.getId());
@@ -42,55 +42,55 @@ public class DAOActividad {
 		em.close();
 		return na1;
 	}
-		
+
 	public List<Actividad> getActividades() {
-		EntityManager em=EMF.createEntityManager();	
+		EntityManager em=EMF.createEntityManager();
 
 		String jpql = "Select a From Actividad a";
-		Query query = em.createQuery(jpql); 
-		List<Actividad> resultados = query.getResultList(); 
+		Query query = em.createQuery(jpql);
+		List<Actividad> resultados = query.getResultList();
 		return resultados;
 	}
-	
+
 	public  Actividad getActividad(int idActividad) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "Select u From Actividad u where u.id =?1";
-		Query query = em.createQuery(jpql); 
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, idActividad);
+		Actividad actaux = query.getSingleResult();
 		em.close();
-		return (Actividad) query.getSingleResult();
-	}	
-	
-		
+		return act;
+	}
+
+
 	public List<Actividad> getActividadesUsuario(int usuario) {
-		EntityManager em=EMF.createEntityManager();	
-		String jpql = "SELECT a FROM Actividad a,actividad_usuario au WHERE ((au.actividad_id = a.id)" // 
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT a FROM Actividad a,actividad_usuario au WHERE ((au.actividad_id = a.id)" //
 		+ "AND (au.invitados_idUsuario =1?))"  // sea un invitado
 		+ "OR (a.duenio_idUsuario=1?)"; // sea duenio
-		Query query = em.createQuery(jpql); 
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, usuario);
-		List<Actividad> resultados = query.getResultList(); 
+		List<Actividad> resultados = query.getResultList();
 		return resultados;
-	}	
-	
-	/// Referentes a Superposicion
-	
+	}
+
+	/// Referentes a Superposici�n
+
 	public List<Actividad> getActividadesSuperpuestasUsuario(int usuario, int actividad) {
-		EntityManager em=EMF.createEntityManager();	
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT a1 FROM Actividad a1 , Actividad a2 "
 				+ "WHERE a.duenio_idUsuario = ?1"
 				+ " AND a1.id != ?2" /// Sean distintas actividades
 				+ " AND a2.id = ?2" /// la a con a2
 				+ " AND (a1.fechaInicio <= a2.fechaFin" + " AND a2.fechaInicio < a1.fechaFin"
 				+ " OR a1.fechaInicio <= a2.fechaFin" + " AND a2.fechaInicio <= a1.fechaInicio)";
-		Query query = em.createQuery(jpql); 
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, usuario);
 		query.setParameter(2, actividad);
-		List<Actividad> resultados = query.getResultList(); 
+		List<Actividad> resultados = query.getResultList();
 		return resultados;
 		}
-	
-	
+
 	/// ACTIVIDADES DE UN USUARIO EN UNA FECHA DADA
 
 	public  List<Actividad> getActividadDeUsuarioxFecha(int idUsuario,Date fecha) {
@@ -103,9 +103,9 @@ public class DAOActividad {
 			+ " and extract(month from a.fechaInicio) = ?3"
 			+ " and extract(year from a.fechaInicio) = ?4) OR "
 			// en base a la fecha de fin
-			+ "(extract(day from a.fechaFin )= ?2" 
+			+ "(extract(day from a.fechaFin )= ?2"
 			+ " and extract(month from a.fechaFin) = ?3"
-			+ " and extract(year from a.fechaFin) = ?4))"; 
+			+ " and extract(year from a.fechaFin) = ?4))";
 		Query query = em.createQuery(jpql);
 		query.setParameter(1, idUsuario);
 		query.setParameter(2, calendario.get(Calendar.DAY_OF_MONTH));
@@ -115,22 +115,22 @@ public class DAOActividad {
 		em.close();
 		return resultados;
 	}
-	
+
 	/// ACTIVIDADES DE UN USUARIO ENTRE 2 FECHAS DADAS
 
 	public  List<Actividad> getActividadDeUsuarioEntreDias(int idUsuario, Date fecha1, Date fecha2) {
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT a FROM Actividad a WHERE (a.duenio.id=?1) AND a.fechaInicio >= ?2  AND a.fechaFin <= ?3 "; 
+		String jpql = "SELECT a FROM Actividad a WHERE (a.duenio.id=?1) AND a.fechaInicio >= ?2  AND a.fechaFin <= ?3 ";
 		Query query = em.createQuery(jpql);
 		query.setParameter(1, idUsuario);
 		query.setParameter(2, fecha1);
 		query.setParameter(3, fecha2);
 		List<Actividad> resultados = query.getResultList();
-		em.close();	
+		em.close();
 		return resultados;
 	}
 
-	/// UPDATE AND DELETE 
+	/// UPDATE AND DELETE
 
 		public  Actividad updateActividad(int id,String nombre,int idCalendario, int idusuario ,Date fechaInicio, Date fechafin ,int sala ) {
 			Actividad act = getActividad(id);
@@ -151,11 +151,11 @@ public class DAOActividad {
 	        return act;
 
 		}
-		
+
 		public  boolean deleteActividad(Integer idActividad) {
 			EntityManager em=EMF.createEntityManager();
 			em.getTransaction().begin();
-			String jpql = "DELETE FROM Actividad a WHERE a.id = ?1"; 
+			String jpql = "DELETE FROM Actividad a WHERE a.id = ?1";
 	        Query query = em.createQuery(jpql);
 	        query.setParameter(1, idActividad);
 	        query.executeUpdate();
@@ -164,10 +164,10 @@ public class DAOActividad {
 	        Actividad actividad = getActividad(idActividad);
 			if (actividad == null) {
 				return  true;
-			}	
+			}
 			return false;
-	       
+
 		}
 
-		
+
 }

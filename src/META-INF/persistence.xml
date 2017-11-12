@@ -11,15 +11,16 @@
       <class>entidades.Sala</class> <!-- <mapping-file>\META-INF\mapping.xml</class> -->
       <class>entidades.Usuario</class> <!-- <mapping-file>\META-INF\mapping.xml</class> -->
       <class>entidades.Invitacion</class> <!-- <mapping-file>\META-INF\mapping.xml</class> -->
-      <properties>		
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      <properties>
+      					
+		<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+		
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MakeMyMeetingDB?createDatabaseIfNotExist=true" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.hbm2ddl.auto" value="create" />
-		
+					
     </properties>
-
-
+    
    </persistence-unit>
 </persistence>

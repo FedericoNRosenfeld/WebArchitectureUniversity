@@ -38,24 +38,16 @@ private static DAOUsuario daousuario;
 	    return resultados;
 	    
 	}
-	
-//   Version con el EntityManager desde fuera 	
-	
-//	public static Usuario getUsuario(int idUsuario,EntityManager em) {
-//		String jpql = "Select u From Usuario u where u.id =?1";
-//		Query query = em.createQuery(jpql); 
-//		query.setParameter(1, idUsuario);
-//		return (Usuario) query.getSingleResult();
-//	}
-//	
+
 	
 	public  Usuario getUsuario(int idUsuario) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "Select u From Usuario u where u.idUsuario =?1";
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idUsuario);
+		Usuario usuariotemp = (Usuario) query.getSingleResult();
 		em.close();
-		return (Usuario) query.getSingleResult();
+		return usuariotemp;
 	}
 	
 
@@ -92,8 +84,24 @@ private static DAOUsuario daousuario;
 		return false;
        
 	}
+
 	
-/// TIEMPO LIBRE PARA AGREGAR UNA NUEVA ACTIVIDAD
+	//// LOGIN
+	
+	public Usuario login(Usuario usuario) {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "Select u from Usuario u where u.userName =?1 and u.password =?2 ";
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, usuario.getUserName());
+		query.setParameter(2, usuario.getPassword());
+		Usuario usuarioAux=(Usuario) query.getSingleResult();
+		em.close();
+		return usuarioAux;
+	}
+	
+	
+
+	/// TIEMPO LIBRE PARA AGREGAR UNA NUEVA ACTIVIDAD
 		public  boolean tiempoLibreUsuario(int usuario, Date fechaInicio, Date fechafin) {
 			// Optimizar para los usuarios invitados
 			EntityManager em=EMF.createEntityManager();	
@@ -109,26 +117,4 @@ private static DAOUsuario daousuario;
 			em.close();
 			return (resultados == null);
 		}
-
-	
-	//// LOGIN
-	
-	public Usuario login(Usuario usuario) {
-		EntityManager em=EMF.createEntityManager();
-		String jpql = "Select u From Usuario u where u.userName =?1 && u.password =?2 ";
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, usuario.getUserName());
-		query.setParameter(2, usuario.getPassword());
-		em.close();
-		return (Usuario) query.getSingleResult();
-	}
-
-
 }
-
-
-
-
-
-
-	

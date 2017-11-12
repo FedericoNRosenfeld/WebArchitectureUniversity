@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Usuario /*implements Serializable*/ {
 
 	//private static final long serialVersionUID = -4686073705675341538L;
-	@Id 
+	@Id
 	@GeneratedValue
 	private int idUsuario;
 	//@Column(nullable=false)
@@ -34,12 +34,12 @@ public class Usuario /*implements Serializable*/ {
 	@OneToMany(mappedBy ="usuario_i", cascade=CascadeType.PERSIST)
 	private List<Invitacion> listInvitaciones;
 	// Actividad
-	@ManyToMany (mappedBy ="invitados", cascade=CascadeType.PERSIST)
-	private List<Actividad >actividadesInvitado;
-	
+	//@ManyToMany (mappedBy ="invitados", cascade=CascadeType.PERSIST)
+	//private List<Actividad> actividadesInvitado;
+
 	public Usuario() {
 	}
-	
+
 	public Usuario(String nombre, String apellido) {
 		// usuario sin UserName ni pass
 		this.nombre = nombre;
@@ -61,7 +61,7 @@ public class Usuario /*implements Serializable*/ {
 		this.actividadesInvitado =  new ArrayList<Actividad>();
 		this.listInvitaciones =  new ArrayList<Invitacion>();
 	}
-	
+
 	public int getId() {
 		return idUsuario;
 	}
@@ -101,8 +101,8 @@ public class Usuario /*implements Serializable*/ {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
+
 	public List<Invitacion> getListInvitaciones() {
 		return listInvitaciones;
 	}
@@ -132,32 +132,32 @@ public class Usuario /*implements Serializable*/ {
 			this.setCalendario(this.calendarios.get(i));
 		}
 	}
-	
+
 	public void setCalendario(Calendario calendario) {
 		this.calendarios.add(calendario);
 	}
 
 	 /// compartir calendarios y aceptar calendarios de otros
-	  
-	
+
+
 
 	public void agregarCalendario(Calendario calendario) {
 	        this.calendarios.add(calendario);
 	    }
-	 
+
 	public Calendario buscarCalendarioID( int id){
 		for (int i = 0;i< this.calendarios.size();i++){
 			if(	this.calendarios.get(i).getId() == id) {
 				return this.calendarios.get(i); }
 			}
 		return null;
-		
+
 	}
 	  public void compartirCalendario(Calendario calendario, Usuario usuario) {
 		  usuario.agregarCalendario(calendario);
 	    }
 
-	  
+
 	/*
 	//////////////////////////// Todo lo relacionado con recordar Invitaciones de Actividades pendientes
 	*/
@@ -173,15 +173,15 @@ public class Usuario /*implements Serializable*/ {
 			this.listInvitaciones.add(new Invitacion(actividad, this));
 		}
 	}
-	
-	
-	
+
+
+
 	////////// equals
 
 	public boolean equals(Object obj) {
         Usuario u = (Usuario) obj;
-        return u.idUsuario == idUsuario && u.nombre.equals(nombre)&& u.apellido.equals(apellido) 
-        		&& u.userName.equals(userName) && u.password.equals(password);	
+        return u.idUsuario == idUsuario && u.nombre.equals(nombre)&& u.apellido.equals(apellido)
+        		&& u.userName.equals(userName) && u.password.equals(password);
     }
 
 	@Override
@@ -191,5 +191,5 @@ public class Usuario /*implements Serializable*/ {
 				+ listInvitaciones + ", actividadesInvitado=" + actividadesInvitado + "]";
 	}
 
-	
+
 	}

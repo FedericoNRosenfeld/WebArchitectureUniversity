@@ -41,7 +41,7 @@ public class Actividad_REST {
 	@GET
 	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Actividad> getActividad() {
+	public List<Actividad> getActividades() {
 		return DAOActividad.getInstance().getActividades();
 	}
 
@@ -202,7 +202,7 @@ public class Actividad_REST {
 	@Secured
 	@Path("/actividades_usuario_entre_fechas")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Actividad> getActividadesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
+	public List<Actividad> getReunionesUsuarioEntreFecha(@QueryParam("idUsuario") int idUsuario, @QueryParam("fecha1") String fecha1,@QueryParam("fecha2") String fecha2) {
 
 		try {
 			Date nfecha1 = formatoFecha.parse(fecha1);

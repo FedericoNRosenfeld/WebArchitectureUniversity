@@ -31,10 +31,9 @@ public class Usuario_REST {
 
 	 // CREAR UN USUARIO
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response crearusuario(Usuario usuario) {
+	public Response crearUsuario(Usuario usuario) {
 	Usuario nw = DAOUsuario.getInstance().crearUsuario(usuario.getNombre(),usuario.getApellido(),usuario.getUserName(),usuario.getPassword());
 	if(nw!=null) {
 		return Response.status(201).entity(nw).build();

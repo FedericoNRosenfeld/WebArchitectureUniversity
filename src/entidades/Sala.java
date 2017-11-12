@@ -25,13 +25,13 @@ public class Sala /*implements Serializable */{
 	private String nombre;
 	private String direccion;
 
-	@OneToMany(mappedBy="lugar")
+	@OneToMany(mappedBy="lugar", cascade=CascadeType.PERSIST)
 	private List<Actividad> actividades;
-	
+
 	public Sala() {
-		
+
 	}
-	
+
 	public Sala(String nombre, String direccion) {
 		this.nombre = nombre;
 		this.direccion = direccion;
@@ -66,13 +66,13 @@ public class Sala /*implements Serializable */{
 	public List<Actividad> getActividades() {
 		return actividades;
 	}
-	
+
 	public void setActividad(Actividad actividad) {
 		if (this.hayLugar(actividad)) {
 				this.actividades.add(actividad);
 		}
 	}
-	
+
 	public boolean hayLugar(Actividad act) {
 		for(int i=0; i<  actividades.size(); i++) {
 			if (this.actividades.get(i).compararSuperPosicion(act)) {
@@ -81,13 +81,13 @@ public class Sala /*implements Serializable */{
 		}
 		 return true;
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return "Sala [id=" + id + ", nombre=" + nombre + ", direccion=" + direccion + ", Actividades=" + actividades
 				+ "]";
 	}
-	
-	
+
+
 }

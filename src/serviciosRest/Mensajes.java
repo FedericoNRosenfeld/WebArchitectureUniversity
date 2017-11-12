@@ -21,8 +21,8 @@ public class Mensajes extends WebApplicationException{
 	         
 	         case 3:
 	        	 new RecursoNoExiste(id);
+	        
 	         break;
-		         
 	    	 }
 	   }
 	    	

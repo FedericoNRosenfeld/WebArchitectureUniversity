@@ -3,6 +3,7 @@ package serviciosRest;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class Obj_Actividad {
 	// Objeto Json
 			private String nombre;

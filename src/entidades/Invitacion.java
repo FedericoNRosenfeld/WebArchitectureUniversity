@@ -3,20 +3,19 @@ package entidades;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Invitacion {
-	
+
 	@Id
 	@GeneratedValue
 	private int id;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.PERSIST)
 	private Actividad actividad_i;
 	@ManyToOne
 	private Usuario usuario_i;
-	
+
 	public Invitacion() {}
 
 	public Invitacion(Actividad actividad_i, Usuario usuario_i) {
@@ -48,7 +47,7 @@ public class Invitacion {
 	public void setUsuario_i(Usuario usuario_i) {
 		this.usuario_i = usuario_i;
 	}
-	
-	
+
+
 
 }

@@ -11,7 +11,7 @@ public class TokenHelper {
 	
 	/**
 	 * Genera un token al usuario que corresponde a un cierto userName
-	 * @param userName userName del usuario
+	 * @param userName del usuario
 	 * @return token de autentificacion
 	 */
 	public static String generarToken(String userName){
@@ -28,7 +28,7 @@ public class TokenHelper {
 	/**
 	 * Setea el nuevo token en la hash que contiene los tokens de usuarios
 	 * @param token Token a setear
-	 * @param userName userName del usuario dueño del token
+	 * @param userName del usuario dueño del token
 	 */
 	public static void setToken(String token, String userName){
 		tokens.put(token,userName);

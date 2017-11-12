@@ -24,16 +24,16 @@ public class Calendario /*implements Serializable */{
 	private int id;
 	//@Column(nullable=false)
 	private String nombre;
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne
 	private Usuario duenio;
 
-   	@OneToMany(mappedBy="calendario",cascade=CascadeType.PERSIST)
+  @OneToMany(mappedBy="calendario",cascade=CascadeType.PERSIST)
 	private List<Actividad> actividades;
 
 	public Calendario(){
-		
+
 	}
-	
+
 	public Calendario(String nombre, Usuario duenio) {
 		this.nombre = nombre;
 		this.actividades = new ArrayList<Actividad>();
@@ -44,18 +44,18 @@ public class Calendario /*implements Serializable */{
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	public Usuario getDuenio() {
 		return duenio;
 	}
-	public void setDueño(Usuario duenio) {
+	public void setDueï¿½o(Usuario duenio) {
 		this.duenio = duenio;
 	}
 
@@ -63,13 +63,13 @@ public class Calendario /*implements Serializable */{
 	public List<Actividad> getActividades() {
 		return actividades;
 	}
-	
+
 	public void setActividades(List<Actividad> actividades) {
 		for (int i = 0;i< actividades.size();i++){
 			this.setActividad(actividades.get(i));
 		}
 	}
-	
+
 	public void setActividad(Actividad actividad) {
 		//Al agregar una actividad al calendario, a esta misma se le asocia dicho calendario
 		if (this.disponibilidad(actividad)) {
@@ -78,10 +78,10 @@ public class Calendario /*implements Serializable */{
 		}
 	}
 
-	
+
 	public boolean disponibilidad(Actividad act) {
-	/// busca en su listado de actividades si hay disponibilidad para agregar una nueva	
-		boolean valor = true;	
+	/// busca en su listado de actividades si hay disponibilidad para agregar una nueva
+		boolean valor = true;
 		for (int i = 0;i< this.actividades.size();i++){
 			if (valor == true) {
 				valor = (this.actividades.get(i).compararSuperPosicion(act));
@@ -90,11 +90,11 @@ public class Calendario /*implements Serializable */{
 				return false;
 			}
 		}
-		return true;	
+		return true;
 	}
 
 	public void eliminarActividad(Actividad act) {
 		 this.actividades.remove(act);
 	}
-	
+
 }

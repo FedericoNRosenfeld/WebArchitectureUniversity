@@ -34,18 +34,15 @@ public class Actividad /*implements Serializable*/ {
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Sala lugar;
-	
-	@ManyToMany(cascade=CascadeType.PERSIST)
+
+	@ManyToMany
 	private List<Usuario> invitados;
-	
-	// se saco la idea de usuarios pendientes y que solo quede todo en invitados
-	//@ManyToOne -    porque un usuario puede tener muchos calendarios y un calendario muchos usuarios
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+
+	@ManyToOne
 	private Calendario calendario;
-		
+
 	public Actividad() {}
-	
+
 	public Actividad(String nombre, Usuario duenio, Date fechaInicio, Date fechaFin, Calendario c) {
 		this.nombre = nombre;
 		this.duenio = duenio;
@@ -56,16 +53,16 @@ public class Actividad /*implements Serializable*/ {
 		this.calendario = c;
 //		this.pendientes = new ArrayList<Usuario>();
 	}
-	
+
 
 	public Calendario getCalendario() {
 		return calendario;
 	}
 
 	public void setCalendario(Calendario calendario) {
-		this.calendario = calendario;		
+		this.calendario = calendario;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -115,9 +112,9 @@ public class Actividad /*implements Serializable*/ {
 			this.lugar = lugar;
 			this.lugar.setActividad(this);
 		}
-		//mmdy: habria que ver como indicar en caso de no poder ponerlo en esa sala 
+		//mmdy: habria que ver como indicar en caso de no poder ponerlo en esa sala
 	}
-	
+
 	////////////////////////////////////////////////
 
     public void setInvitado(Usuario usuario) {
@@ -125,15 +122,15 @@ public class Actividad /*implements Serializable*/ {
    	 // creamos una invitacion para hace rla asociacion entre usuario y actividad
    	 // V 2.0 del tpe / antes se hacia todo en actividad pero se le quito esta responsabilidad
    	 usuario.setInvitacion(new Invitacion(this, usuario));
-   }	
-	
+   }
+
 	public List<Usuario> getInvitados() {
 		return invitados;
 	}
 
 	////////////////////////////////////////////////
 
-	
+
 	public boolean compararSuperPosicion(Actividad act) {
 		// verifica si hay superposiciones entre las fechas de 2 actividades
 		//If the Integer is equal to the argument then 0 is returned.
@@ -142,13 +139,13 @@ public class Actividad /*implements Serializable*/ {
     	Date acti = act.getFechaInicio();
     	Date actf = act.getFechaFin();
         if (((acti.compareTo(this.fechaFin) <= 0 )&& (actf.compareTo(this.fechaFin) >= 0))  ||
-        	((this.fechaInicio.compareTo(acti)<= 0)&& (this.fechaFin.compareTo(actf)>= 0))  	
+        	((this.fechaInicio.compareTo(acti)<= 0)&& (this.fechaFin.compareTo(actf)>= 0))
         		) { return true;}
        return false;
     }
-	
+
 	////////////////////////////////////////////////
-	
+
 	public void recordarInvitacion() {
 		Usuario usuario;
 		for (int i = 0;i< this.invitados.size();i++){
@@ -156,13 +153,13 @@ public class Actividad /*implements Serializable*/ {
              usuario.recordarInvitacion(this);
             }
         }
-        
+
 	/////////// equals
 	 public boolean equals(Object obj) {
 	        Actividad act = (Actividad) obj;
 	        return act.id == this.id && act.fechaInicio.equals(this.fechaInicio) && act.fechaFin.equals(this.fechaFin);
 	    }
-	 
+
 	 @Override
 		public String toString() {
 			return "Actividad [id=" + id + ", nombre=" + nombre + ", duenio=" + duenio + ", fechaInicio=" + fechaInicio
@@ -170,5 +167,5 @@ public class Actividad /*implements Serializable*/ {
 					 + ", calendario=" + calendario + "]";
 		}
 
-	
+
 }
